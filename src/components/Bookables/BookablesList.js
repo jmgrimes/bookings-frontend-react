@@ -1,5 +1,5 @@
 import {
-  Button,
+  Button, 
   ButtonGroup,
   Card,
   CardHeader,
@@ -22,28 +22,46 @@ import {
   Category,
   Event
 } from "@material-ui/icons";
-import React, { Fragment } from "react";
-
 import { 
+  Fragment, 
+  useReducer 
+} from "react";
+
+import {
+  actions,
+  reducer,
+} from "./reducer";
+import { 
+  bookables,
   days, 
   sessions 
 } from "../../static.json";
-import { useActions } from "./actions";
+
+const initialState = {
+  group: "Rooms",
+  bookableIndex: 0,
+  showDetails: true,
+  bookables
+};
 
 export default function BookablesList() {
-  const [ 
-    { group, bookableIndex, hasDetails, bookables }, 
-    { setGroup, setBookable, nextBookable, previousBookable, toggleDetails }
-  ] = useActions();
+  const [ { group, bookableIndex, showDetails, bookables }, dispatch ] = useReducer(reducer, initialState);
+
   const groups = [ ...new Set(bookables.map(bookable => bookable.group)) ];
   const bookablesInGroup = bookables.filter(bookable => bookable.group === group);
   const bookable = bookablesInGroup[bookableIndex];
+
+  const nextBookable = () => dispatch(actions.nextBookable());
+  const previousBookable = () => dispatch(actions.previousBookable());
+  const setBookable = (index) => dispatch(actions.setBookable(index));
+  const setGroup = (group) => dispatch(actions.setGroup(group));
+  const toggleDetails = () => dispatch(actions.toggleDetails());
 
   return (
     <Fragment>
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <Select id="group" value={group} onChange={event => setGroup(event.target.value)} fullWidth>
+          <Select fullWidth value={group} onChange={event => setGroup(event.target.value)}>
             {groups.map(group => <MenuItem value={group} key={group}>{group}</MenuItem>)}
           </Select>
           <List>
@@ -56,9 +74,9 @@ export default function BookablesList() {
               </ListItem>
             ))}
           </List>
-          <ButtonGroup fullWidth variant="text">
-            <Button color="primary" onClick={previousBookable} startIcon={<ArrowLeft />}>Prev</Button>
-            <Button color="primary" onClick={nextBookable} endIcon={<ArrowRight />}>Next</Button>
+          <ButtonGroup fullWidth variant="outlined">
+            <Button color="primary" startIcon={<ArrowLeft />} onClick={previousBookable}>Prev</Button>
+            <Button color="primary" endIcon={<ArrowRight />} onClick={nextBookable}>Next</Button>
           </ButtonGroup>
         </Grid>
         { bookable && (
@@ -66,13 +84,13 @@ export default function BookablesList() {
             <Card>
               <CardHeader title={bookable.title} action={
                 <FormControlLabel label="Show Details" control={
-                  <Checkbox checked={hasDetails} onChange={toggleDetails}/>
+                  <Checkbox checked={showDetails} onChange={toggleDetails}/>
                 }/>
               }/>
               <CardContent>
                 <Typography variant="body1" color="textPrimary">{bookable.notes}</Typography>
               </CardContent>
-                {hasDetails && (
+                {showDetails && (
                   <CardContent>
                     <Typography variant="h6" component="h6" color="textPrimary">Availability</Typography>
                     <Grid container spacing={3}>
