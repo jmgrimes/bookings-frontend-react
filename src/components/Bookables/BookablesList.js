@@ -90,33 +90,33 @@ export default function BookablesList() {
               <CardContent>
                 <Typography variant="body1" color="textPrimary">{bookable.notes}</Typography>
               </CardContent>
-                {showDetails && (
-                  <CardContent>
-                    <Typography variant="h6" component="h6" color="textPrimary">Availability</Typography>
-                    <Grid container spacing={3}>
-                      <Grid item xs={6}>
-                        <List>
-                          {bookable.days.sort().map(day => <ListItem key={day}>
-                            <ListItemIcon>
-                              <CalendarToday />
-                            </ListItemIcon>
-                            <ListItemText primary={days[day]}/>
-                          </ListItem>)}
-                        </List>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <List>
-                          {bookable.sessions.map(session => <ListItem key={session}>
-                            <ListItemIcon>
-                              <Event />
-                            </ListItemIcon>
-                            <ListItemText primary={sessions[session]}/>
-                          </ListItem>)}
-                        </List>
-                      </Grid>
+              {showDetails && (
+                <CardContent>
+                  <Typography variant="h6" component="h6" color="textPrimary">Availability</Typography>
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <List>
+                        {bookable.days.sort().map(day => <ListItem key={day}>
+                          <ListItemIcon>
+                            <CalendarToday />
+                          </ListItemIcon>
+                          <ListItemText primary={days[day]}/>
+                        </ListItem>)}
+                      </List>
                     </Grid>
-                  </CardContent>
-                )}
+                    <Grid item xs={6}>
+                      <List>
+                        {bookable.sessions.map(session => <ListItem key={session}>
+                          <ListItemIcon>
+                            <Event />
+                          </ListItemIcon>
+                          <ListItemText primary={sessions[session]}/>
+                        </ListItem>)}
+                      </List>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              )}
             </Card>
           </Grid>
         )}
