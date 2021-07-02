@@ -7,8 +7,6 @@ import {
 import { users } from "../../static.json";
 
 export default function UserPicker() {
-  
-
   return (
     <FormControl>
       <Select value="" displayEmpty="true">
