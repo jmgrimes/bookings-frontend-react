@@ -28,7 +28,8 @@ import {
 import { 
   Fragment, 
   useEffect,
-  useReducer 
+  useReducer,
+  useRef 
 } from "react";
 
 import {
@@ -54,6 +55,7 @@ export default function BookablesList() {
   const [ 
     { group, bookableIndex, showDetails, isLoading, error, bookables }, dispatch 
   ] = useReducer(reducer, initialState);
+  const timerRef = useRef(null);
 
   const groups = [ ...new Set(bookables.map(bookable => bookable.group)) ];
   const bookablesInGroup = bookables.filter(bookable => bookable.group === group);
@@ -66,6 +68,7 @@ export default function BookablesList() {
   const previousBookable = () => dispatch(actions.previousBookable());
   const setBookable = (index) => dispatch(actions.setBookable(index));
   const setGroup = (group) => dispatch(actions.setGroup(group));
+  const stopPresentation = () => clearInterval(timerRef.current);
   const toggleDetails = () => dispatch(actions.toggleDetails());
 
   useEffect(() => {
@@ -74,6 +77,13 @@ export default function BookablesList() {
         .then(fetchBookablesSuccess)
         .catch(fetchBookablesError);
   }, []);
+
+  useEffect(() => {
+    timerRef.current = setInterval(nextBookable, 3000);
+    return stopPresentation;
+  })
+
+
 
   if (error) {
     return (
@@ -122,9 +132,12 @@ export default function BookablesList() {
             <CardHeader 
                 title={ !isLoading ? bookable.title : <Skeleton animation="wave" width="60%" /> } 
                 action={ !isLoading &&
-                  <FormControlLabel 
-                      label="Show Details" 
-                      control={ <Checkbox checked={ showDetails } onChange={ toggleDetails }/> }/>
+                  <Fragment>
+                    <FormControlLabel 
+                        label="Show Details" 
+                        control={ <Checkbox checked={ showDetails } onChange={ toggleDetails }/> }/>
+                    <Button onClick={ stopPresentation }>Stop</Button>
+                  </Fragment>
                 } />
             <CardContent>
               <Typography variant="body1" color="textPrimary">
