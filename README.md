@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Getting Started
+
+This project is my journey through the sample application of React Hooks in Action by Manning Publications, and demonstrates several facets of using the various built in React Hooks instead of using class based components.  Along the way, my project will definitely be deviating from the React Hooks in Action sample, in order to make it my own, as I experiment with different ways to structure and encapsulate logic in the application better, and work with an existing UI library like Material UI to provide the user interface components.
+
+Both of these choices serve to deviate the application from its origins, and force me to go "off script" a bit as I work.  They also more accurately represent the choices I would be likely to make in developing my own applications, helping me understand the effects of those choices more fully.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -13,6 +17,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+### `yarn start-backend`
+
+Runs the sample backend for the database.\
+Open [http://localhost:3001](http://localhost:3001) to view it in the browser or otherwise make API requests to it.
+
+This will read from and modify the db.json file in the root of this project as a datastore.
+
+To better experience the "loading" behaviors of this app, you can append --delay <ms> to introduce a fixed time delay for the backend.
 
 ### `yarn test`
 
