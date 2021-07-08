@@ -1,8 +1,4 @@
 import { 
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
   List,
   ListItem,
   ListItemIcon,
@@ -16,79 +12,59 @@ import {
   Person 
 } from "@material-ui/icons";
 import { 
-  Fragment, 
   useEffect, 
   useState 
 } from "react";
 import getData from "../../utils/api";
 
-export default function UsersList() {
+export default function UsersList({ user, setUser }) {
   const [ users, setUsers ] = useState([]);
-  const [ userIndex, setUserIndex ] = useState(0);
-  const [ isLoading, setIsLoading ] = useState(true);
   const [ error, setError ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);  
 
-  const user = users?.[userIndex];
-  
-  useEffect(() => {
-    setUsers([]);
-    setError(false);
-    setIsLoading(true);
-    getData("http://localhost:3001/users")
-        .then(data => {
-          setUsers(data);
-          setIsLoading(false);
-        })
-        .catch(error => {
-          setError(error);
-          setIsLoading(false);
-        });
-  }, []);
+  useEffect(
+    () => {
+      getData("http://localhost:3001/users")
+          .then((users) => {
+            setUser(users[0]);
+            setUsers(users);
+            setIsLoading(false);
+          })
+          .catch(error => {
+            setError(error);
+            setIsLoading(false);
+          });
+    }, 
+    [ setUser ]
+  );
 
   if (error) {
     return (
-      <Typography variant="body1" component="p">{error}</Typography>
+      <Typography variant="body1" component="p">{ error }</Typography>
     )
   }
 
   return (
-    <Fragment>
-      <Grid container spacing={3}>
-        <Grid item xs={3}>
-          <List item>
-            { !isLoading ? 
-              users.map((user, index) => (
-                <ListItem button selected={ index === userIndex } onClick={ () => setUserIndex(index) }>
-                  <ListItemIcon>
-                    <Person />
-                  </ListItemIcon>
-                  <ListItemText primary={ user.name } />
-                </ListItem>
-              )) :
-              [...Array(3)].map(() => (
-                <ListItem button>
-                  <ListItemIcon>
-                    <Person />
-                  </ListItemIcon>
-                  <ListItemText primary={ <Skeleton animation="wave" />} />
-                </ListItem>
-              ))
-            }
-          </List>
-        </Grid>
-        <Grid item xs={9}>
-          <Card>
-            <CardHeader 
-                title={ !isLoading ? user.name : <Skeleton animation="wave" width="60%" /> } 
-                subheader={ !isLoading ? user.title : <Skeleton animation="wave" /> }/>
-            <CardContent>
-              <Typography variant="body1" color="textPrimary">
-                { !isLoading ? user.notes : <Skeleton animation="wave" /> }
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Fragment>
+    <List item>
+      { 
+        !isLoading ? 
+        users.map((u) => (
+          <ListItem button selected={ u === user } onClick={ () => setUser(u) }>
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            <ListItemText primary={ u.name } />
+          </ListItem>
+        )) :
+        [...Array(3)].map(() => (
+          <ListItem button>
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            <ListItemText primary={ <Skeleton animation="wave" /> } />
+          </ListItem>
+        ))
+      }
+    </List>
   );
 };

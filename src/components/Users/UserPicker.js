@@ -28,7 +28,11 @@ export default function UserPicker() {
         <MenuItem value="" selected>
           <em>Users</em>
         </MenuItem>
-        { users.map(user => <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>) }
+        { 
+          users.map((u) => (
+            <MenuItem key={ u.id } value={ u.id }>{ u.name }</MenuItem>
+          ))
+        }
       </Select>
     </FormControl>
   );

@@ -1,12 +1,6 @@
 import {
   Button, 
   ButtonGroup,
-  Card,
-  CardHeader,
-  CardContent,
-  Checkbox,
-  FormControlLabel,
-  Grid,
   List,
   ListItem,
   ListItemIcon,
@@ -18,9 +12,7 @@ import {
 import { 
   ArrowLeft,
   ArrowRight,
-  CalendarToday,
   Category,
-  Event
 } from "@material-ui/icons";
 import {
   Skeleton
@@ -28,156 +20,96 @@ import {
 import { 
   Fragment, 
   useEffect,
-  useReducer,
-  useRef 
+  useState
 } from "react";
 
-import {
-  actions,
-  reducer,
-} from "./reducer";
 import getData from "../../utils/api";
-import { 
-  days, 
-  sessions 
-} from "../../static.json";
 
-const initialState = {
-  group: "Rooms",
-  bookableIndex: 0,
-  showDetails: true,
-  isLoading: true,
-  error: false,
-  bookables: []
-};
-
-export default function BookablesList() {
-  const [ 
-    { group, bookableIndex, showDetails, isLoading, error, bookables }, dispatch 
-  ] = useReducer(reducer, initialState);
-  const timerRef = useRef(null);
-
+export default function BookablesList({ bookable, setBookable }) {
+  const [ bookables, setBookables ] = useState([]);
+  const [ error, setError ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
+  
+  const group = bookable?.group;
   const groups = [ ...new Set(bookables.map(bookable => bookable.group)) ];
   const bookablesInGroup = bookables.filter(bookable => bookable.group === group);
-  const bookable = bookablesInGroup[bookableIndex];
 
-  const fetchBookablesRequest = () => dispatch(actions.fetchBookablesRequest());
-  const fetchBookablesSuccess = (bookables) => dispatch(actions.fetchBookablesSuccess(bookables));
-  const fetchBookablesError = (error) => dispatch(actions.fetchBookablesError(error));
-  const nextBookable = () => dispatch(actions.nextBookable());
-  const previousBookable = () => dispatch(actions.previousBookable());
-  const setBookable = (index) => dispatch(actions.setBookable(index));
-  const setGroup = (group) => dispatch(actions.setGroup(group));
-  const stopPresentation = () => clearInterval(timerRef.current);
-  const toggleDetails = () => dispatch(actions.toggleDetails());
+  const changeGroup = (group) => {
+    const bookablesInSelectedGroup = bookables.filter(bookable => bookable.group === group);
+    const targetBookable = bookablesInSelectedGroup[0];
+    setBookable(targetBookable);
+  }
 
-  useEffect(() => {
-    fetchBookablesRequest();
-    getData("http://localhost:3001/bookables")
-        .then(fetchBookablesSuccess)
-        .catch(fetchBookablesError);
-  }, []);
+  const nextBookable = () => {
+    const currentIndex = bookablesInGroup.indexOf(bookable);
+    const nextIndex = (currentIndex + 1) % bookablesInGroup.length;
+    const nextBookable = bookablesInGroup[nextIndex];
+    setBookable(nextBookable);
+  }
 
-  useEffect(() => {
-    timerRef.current = setInterval(nextBookable, 3000);
-    return stopPresentation;
-  })
+  const previousBookable = () => {
+    const currentIndex = bookablesInGroup.indexOf(bookable);
+    const previousIndex = (bookablesInGroup.length + currentIndex - 1) % bookablesInGroup.length;
+    const previousBookable = bookablesInGroup[previousIndex];
+    setBookable(previousBookable);
+  }
 
-
+  useEffect(
+    () => {
+      getData("http://localhost:3001/bookables")
+          .then((bookables) => {
+            setBookable(bookables[0]);
+            setBookables(bookables);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            setError(error);
+            setIsLoading(false);
+          });
+    }, 
+    [ setBookable ]
+  );
 
   if (error) {
     return (
-      <Typography variant="body1" component="p">{error}</Typography>
+      <Typography variant="body1" component="p">{ error }</Typography>
     )
   }
 
   return (
     <Fragment>
-      <Grid container spacing={ 3 }>
-        <Grid item xs={ 3 }>
-          { !isLoading && 
-            <Select fullWidth value={ group } onChange={ event => setGroup(event.target.value) }>
-              { groups.map(group => <MenuItem value={ group } key={ group }>{ group }</MenuItem>) }
-            </Select> 
-          }
-          <List>
-            { !isLoading ? 
-              bookablesInGroup.map((bookable, index) => 
-                <ListItem key={ bookable.id } selected={ index === bookableIndex } onClick={ () => setBookable(index) }>
-                  <ListItemIcon>
-                    <Category />
-                  </ListItemIcon>
-                  <ListItemText primary={ bookable.title }/>
-                </ListItem>
-              ) : 
-              [...Array(3)].map(() => 
-                <ListItem button>
-                  <ListItemIcon>
-                    <Category />
-                  </ListItemIcon>
-                  <ListItemText primary={ <Skeleton animation="wave" /> } />
-                </ListItem>
-              )
-            }
-          </List>
-          { !isLoading && 
-            <ButtonGroup fullWidth variant="outlined">
-              <Button color="primary" startIcon= {<ArrowLeft /> } onClick={ previousBookable }>Prev</Button>
-              <Button color="primary" endIcon={ <ArrowRight /> } onClick={ nextBookable }>Next</Button>
-            </ButtonGroup> 
-          }
-        </Grid>
-        <Grid item xs={9}>
-          <Card>
-            <CardHeader 
-                title={ !isLoading ? bookable.title : <Skeleton animation="wave" width="60%" /> } 
-                action={ !isLoading &&
-                  <Fragment>
-                    <FormControlLabel 
-                        label="Show Details" 
-                        control={ <Checkbox checked={ showDetails } onChange={ toggleDetails }/> }/>
-                    <Button onClick={ stopPresentation }>Stop</Button>
-                  </Fragment>
-                } />
-            <CardContent>
-              <Typography variant="body1" color="textPrimary">
-                { !isLoading ? bookable.notes : <Skeleton animation="wave" /> }
-              </Typography>
-            </CardContent>
-            { !isLoading && showDetails && 
-              <CardContent>
-                <Typography variant="h6" component="h6" color="textPrimary">Availability</Typography>
-                <Grid container spacing={ 3 }>
-                  <Grid item xs={ 6 }>
-                    <List>
-                      { bookable.days.sort().map(day => 
-                        <ListItem key={ day }>
-                          <ListItemIcon>
-                            <CalendarToday />
-                          </ListItemIcon>
-                          <ListItemText primary={ days[day] }/>
-                        </ListItem>
-                      ) }
-                    </List>
-                  </Grid>
-                  <Grid item xs={ 6 }>
-                    <List>
-                      { bookable.sessions.map(session => 
-                        <ListItem key={ session }>
-                          <ListItemIcon>
-                            <Event />
-                          </ListItemIcon>
-                          <ListItemText primary={ sessions[session] }/>
-                        </ListItem>
-                      ) }
-                    </List>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            }
-          </Card>
-        </Grid>
-      </Grid>
+      {!isLoading && 
+        <Select fullWidth value={ group } onChange={ (event) => changeGroup(event.target.value) }>
+          { groups.map(group => <MenuItem value={ group } key={ group }>{ group }</MenuItem>) }
+        </Select> 
+      }
+      <List>
+        {
+          !isLoading ? 
+          bookablesInGroup.map((b) => (
+            <ListItem key={ b.id } selected={ b === bookable } onClick={ () => setBookable(b) }>
+              <ListItemIcon>
+                <Category />
+              </ListItemIcon>
+              <ListItemText primary={ b.title } />
+            </ListItem>
+          )) : 
+          [...Array(3)].map(() => (
+            <ListItem button>
+              <ListItemIcon>
+                <Category />
+              </ListItemIcon>
+              <ListItemText primary={ <Skeleton animation="wave"/> } />
+            </ListItem>
+          ))
+        }
+      </List>
+      {!isLoading && 
+        <ButtonGroup fullWidth variant="outlined">
+          <Button color="primary" startIcon={ <ArrowLeft /> } onClick={ previousBookable }>Prev</Button>
+          <Button color="primary" endIcon={ <ArrowRight /> } onClick={ nextBookable }>Next</Button>
+        </ButtonGroup> 
+      }
     </Fragment>
   );
 };

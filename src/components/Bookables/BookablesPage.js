@@ -1,11 +1,11 @@
 import { Container } from "@material-ui/core";
 
-import BookablesList from "./BookablesList";
+import BookablesView from "./BookablesView";
 
 export default function BookablesPage() {
   return (
     <Container className="bookables-page" component="main" maxWidth="lg">
-      <BookablesList />
+      <BookablesView />
     </Container>
   );
 };

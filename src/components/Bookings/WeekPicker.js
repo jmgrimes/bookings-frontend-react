@@ -19,7 +19,7 @@ import {
 
 import { actions, initializer, reducer } from "./weekReducer";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   spacer: {
     flexGrow: 1
   }
@@ -38,14 +38,14 @@ export default function WeekPicker({ date }) {
   return (
     <Fragment>
       <Toolbar>
-        <Button variant="outlined" color="primary" startIcon={ <ArrowLeft /> } onClick={ previousWeek }>Prev</Button>
-        <Button variant="outlined" color="primary" startIcon={ <CalendarToday /> } onClick={ today }>Today</Button>
+        <Button color="primary" startIcon={ <ArrowLeft /> } onClick={ previousWeek }>Prev</Button>
         <Typography className={ classes.spacer } component="div" />
         <TextField value={ dateText } placeholder="e.g. 2021-07-06" 
             onChange={ (event) => setDateText(event.target.value) } />
         <Button color="primary" startIcon={ <EventAvailable /> } onClick={ setDate }>Go</Button>
+        <Button color="primary" startIcon={ <CalendarToday /> } onClick={ today }>Today</Button>
         <Typography className={ classes.spacer } component="div"/>
-        <Button variant="outlined" color="primary" endIcon={ <ArrowRight /> } onClick={ nextWeek }>Next</Button>
+        <Button color="primary" endIcon={ <ArrowRight /> } onClick={ nextWeek }>Next</Button>
       </Toolbar>
       <Typography variant="body1" component="p" align="center">
         { week.start.toDateString() } - { week.end.toDateString() }
