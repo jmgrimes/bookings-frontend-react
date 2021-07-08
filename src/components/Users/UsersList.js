@@ -17,7 +17,7 @@ import {
 } from "react";
 import getData from "../../utils/api";
 
-export default function UsersList({ user, setUser }) {
+export default UsersList = ({ user, setUser }) => {
   const [ users, setUsers ] = useState([]);
   const [ error, setError ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);  

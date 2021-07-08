@@ -11,7 +11,6 @@ import {
   Event, 
   People
 } from "@material-ui/icons";
-import { Fragment } from "react";
 import { 
   BrowserRouter as Router, 
   Link,
@@ -33,28 +32,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function App() {
+export default App = () => {
   const classes = useStyles();
   return (
-    <Fragment>
+    <Router>
       <CssBaseline />
-      <Router>
-        <AppBar position="static" color="transparent" className={classes.appbar}>
-          <Toolbar>
-            <Tabs className={classes.menutabs}>
-              <Tab icon={<Event />} label="Bookings" component={Link} to="/bookings" />
-              <Tab icon={<Category />} label="Bookables" component={Link} to="/bookables" />
-              <Tab icon={<People />} label="Users" component={Link} to="/users" />
-            </Tabs>
-            <UserPicker />
-          </Toolbar>
-        </AppBar>
-        <Routes>
-          <Route path="/bookings" element={<BookingsPage />} />
-          <Route path="/bookables" element={<BookablesPage />} />
-          <Route path="/users" element={<UsersPage />} />
-        </Routes>
-      </Router>
-    </Fragment>
+      <AppBar position="static" color="transparent" className={ classes.appbar }>
+        <Toolbar>
+          <Tabs className={ classes.menutabs }>
+            <Tab icon={ <Event /> } component={ Link } label="Bookings" to="/bookings" />
+            <Tab icon={ <Category /> } component={ Link } label="Bookables" to="/bookables" />
+            <Tab icon={ <People /> } component={ Link } label="Users" to="/users" />
+          </Tabs>
+          <UserPicker />
+        </Toolbar>
+      </AppBar>
+      <Routes>
+        <Route path="/bookings" element={ <BookingsPage /> } />
+        <Route path="/bookables" element={ <BookablesPage /> } />
+        <Route path="/users" element={ <UsersPage /> } />
+      </Routes>
+    </Router>
   );
 };

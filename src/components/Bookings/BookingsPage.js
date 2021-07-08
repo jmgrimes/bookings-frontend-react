@@ -6,7 +6,7 @@ import {
 
 import WeekPicker from "./WeekPicker";
 
-export default function BookablesPage() {
+export default BookablesPage = () => {
   return (
     <Container className="bookings-page" component="main" maxWidth="lg">
       <Grid container spacing={ 3 }>

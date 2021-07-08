@@ -25,7 +25,7 @@ import {
 
 import getData from "../../utils/api";
 
-export default function BookablesList({ bookable, setBookable }) {
+export default BookablesList = ({ bookable, setBookable }) => {
   const [ bookables, setBookables ] = useState([]);
   const [ error, setError ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);

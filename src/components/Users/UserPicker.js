@@ -9,7 +9,7 @@ import {
   useState
 } from "react";
 
-export default function UserPicker() {
+export default UserPicker = () => {
   const [ users, setUsers ] = useState();
 
   useEffect(() => {
@@ -36,4 +36,4 @@ export default function UserPicker() {
       </Select>
     </FormControl>
   );
-}
+};

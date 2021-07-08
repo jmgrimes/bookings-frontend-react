@@ -4,7 +4,7 @@ import { useState } from "react";
 import BookableDetails from "./BookableDetails";
 import BookablesList from "./BookablesList";
 
-export default function BookablesView() {
+export default BookablesView = () => {
   const [ bookable, setBookable ] = useState();
 
   return (

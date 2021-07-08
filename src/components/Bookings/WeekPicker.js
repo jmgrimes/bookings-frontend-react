@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function WeekPicker({ date }) {
+export default WeekPicker = ({ date }) => {
   const classes = useStyles();
-  const [ week, dispatch ] = useReducer(reducer, date, initializer);
   const [ dateText, setDateText ] = useState(null);
+  const [ week, dispatch ] = useReducer(reducer, date, initializer);
 
   const nextWeek = () => dispatch(actions.nextWeek());
   const previousWeek = () => dispatch(actions.previousWeek());

@@ -5,7 +5,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-export default function UserDetails({ user }) {
+export default UserDetails = ({ user }) => {
   return (
     user ?
     <Card>

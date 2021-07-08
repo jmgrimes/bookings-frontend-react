@@ -4,7 +4,7 @@ import { useState } from "react";
 import UserDetails from "./UserDetails";
 import UsersList from "./UsersList";
 
-export default function UsersView() {
+export default UsersView = () => {
   const [ user, setUser ] = useState();
 
   return (
