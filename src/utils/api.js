@@ -1,4 +1,4 @@
-export default getData = (url) => {
+const getData = (url) => {
   return fetch(url).then(response => {
     if (!response.ok) {
         throw new Error("There was a problem fetching data from the server.");
@@ -6,3 +6,5 @@ export default getData = (url) => {
     return response.json();
   });
 };
+
+export default getData;

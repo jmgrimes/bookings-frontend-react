@@ -4,9 +4,9 @@ import {
   Typography 
 } from "@material-ui/core";
 
-import WeekPicker from "./WeekPicker";
+import { WeekPicker } from ".";
 
-export default BookablesPage = () => {
+const BookablesPage = () => {
   return (
     <Container className="bookings-page" component="main" maxWidth="lg">
       <Grid container spacing={ 3 }>
@@ -20,3 +20,5 @@ export default BookablesPage = () => {
     </Container>
   );
 };
+
+export default BookablesPage;

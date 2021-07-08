@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default WeekPicker = ({ date }) => {
+const WeekPicker = ({ date }) => {
   const classes = useStyles();
   const [ dateText, setDateText ] = useState(null);
   const [ week, dispatch ] = useReducer(reducer, date, initializer);
@@ -53,3 +53,5 @@ export default WeekPicker = ({ date }) => {
     </Fragment> 
   );
 };
+
+export default WeekPicker;

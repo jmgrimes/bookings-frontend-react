@@ -24,7 +24,7 @@ import {
   sessions
 } from "../../static.json";
 
-export default BookableDetails = ({ bookable }) => {
+const BookableDetails = ({ bookable }) => {
   const [ showDetails, setShowDetails ] = useState(true);
   const toggleDetails = () => setShowDetails(showDetails => !showDetails);
 
@@ -83,3 +83,5 @@ export default BookableDetails = ({ bookable }) => {
     null
   );
 };
+
+export default BookableDetails;

@@ -25,7 +25,7 @@ import {
 
 import getData from "../../utils/api";
 
-export default BookablesList = ({ bookable, setBookable }) => {
+const BookablesList = ({ bookable, setBookable }) => {
   const [ bookables, setBookables ] = useState([]);
   const [ error, setError ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
@@ -113,3 +113,5 @@ export default BookablesList = ({ bookable, setBookable }) => {
     </Fragment>
   );
 };
+
+export default BookablesList;

@@ -18,16 +18,16 @@ const getWeek = (forDate, daysOffset = 0) => {
   };
 };
 
-export const actions = {
+const actions = {
   nextWeek: () => ({ type: ACTION_NEXT_WEEK }),
   previousWeek: () => ({ type: ACTION_PREVIOUS_WEEK }),
   setDate: (date) => ({ type: ACTION_SET_DATE, payload: date }), 
   today: () => ({ type: ACTION_SET_DATE, payload: new Date() })
 };
 
-export const initializer = (date) => getWeek(date);
+const initializer = (date) => getWeek(date);
 
-export const reducer = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case ACTION_NEXT_WEEK:
       return getWeek(state.date, 7);
@@ -38,4 +38,10 @@ export const reducer = (state, action) => {
     default:
       return state;
   }
+};
+
+export {
+  actions,
+  initializer,
+  reducer
 };

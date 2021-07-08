@@ -18,10 +18,9 @@ import {
   Route
 } from "react-router-dom";
 
-import BookablesPage from "./Bookables/BookablesPage";
-import BookingsPage from "./Bookings/BookingsPage";
-import UserPicker from "./Users/UserPicker";
-import UsersPage from "./Users/UsersPage";
+import { BookablesPage } from "./Bookables";
+import { BookingsPage } from "./Bookings";
+import { UserPicker, UsersPage } from "./Users";
 
 const useStyles = makeStyles(theme => ({
   appbar: {
@@ -32,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default App = () => {
+const App = () => {
   const classes = useStyles();
   return (
     <Router>
@@ -55,3 +54,5 @@ export default App = () => {
     </Router>
   );
 };
+
+export default App;

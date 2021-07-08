@@ -1,11 +1,13 @@
 import { Container } from "@material-ui/core";
 
-import BookablesView from "./BookablesView";
+import { BookablesView } from ".";
 
-export default BookablesPage = () => {
+const BookablesPage = () => {
   return (
     <Container className="bookables-page" component="main" maxWidth="lg">
       <BookablesView />
     </Container>
   );
 };
+
+export default BookablesPage;

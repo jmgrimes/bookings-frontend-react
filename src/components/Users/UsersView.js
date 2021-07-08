@@ -1,10 +1,9 @@
 import { Grid } from "@material-ui/core";
 import { useState } from "react";
 
-import UserDetails from "./UserDetails";
-import UsersList from "./UsersList";
+import { UserDetails, UsersList } from ".";
 
-export default UsersView = () => {
+const UsersView = () => {
   const [ user, setUser ] = useState();
 
   return (
@@ -18,3 +17,5 @@ export default UsersView = () => {
     </Grid>
   );
 };
+
+export default UsersView;

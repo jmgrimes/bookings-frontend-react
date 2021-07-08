@@ -5,7 +5,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-export default UserDetails = ({ user }) => {
+const UserDetails = ({ user }) => {
   return (
     user ?
     <Card>
@@ -17,3 +17,5 @@ export default UserDetails = ({ user }) => {
     null
   );
 };
+
+export default UserDetails;

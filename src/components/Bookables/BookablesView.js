@@ -1,10 +1,9 @@
 import { Grid } from "@material-ui/core";
 import { useState } from "react";
 
-import BookableDetails from "./BookableDetails";
-import BookablesList from "./BookablesList";
+import { BookableDetails, BookablesList } from ".";
 
-export default BookablesView = () => {
+const BookablesView = () => {
   const [ bookable, setBookable ] = useState();
 
   return (
@@ -18,3 +17,5 @@ export default BookablesView = () => {
     </Grid>
   );
 };
+
+export default BookablesView;
