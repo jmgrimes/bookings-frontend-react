@@ -41,12 +41,12 @@ const BookableDetails = ({ bookable }) => {
           } 
       />
       <CardContent>
-        <Typography variant="body1" color="textPrimary">{ bookable.notes }</Typography>
+        <Typography variant="body1" component="p">{ bookable.notes }</Typography>
       </CardContent>
       { 
         showDetails && 
         <CardContent>
-          <Typography variant="h6" component="h6" color="textPrimary">Availability</Typography>
+          <Typography variant="h6" component="h6">Availability</Typography>
           <Grid container spacing={ 3 }>
             <Grid item xs={ 6 }>
               <List>

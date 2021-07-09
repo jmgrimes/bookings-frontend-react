@@ -23,7 +23,7 @@ import {
   useState
 } from "react";
 
-import getData from "../../utils/api";
+import { getBookables } from "../../utils/api";
 
 const BookablesList = ({ bookable, setBookable }) => {
   const [ bookables, setBookables ] = useState([]);
@@ -56,7 +56,7 @@ const BookablesList = ({ bookable, setBookable }) => {
 
   useEffect(
     () => {
-      getData("http://localhost:3001/bookables")
+      getBookables()
           .then((bookables) => {
             setBookable(bookables[0]);
             setBookables(bookables);

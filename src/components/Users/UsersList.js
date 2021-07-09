@@ -15,7 +15,7 @@ import {
   useEffect, 
   useState 
 } from "react";
-import getData from "../../utils/api";
+import { getUsers } from "../../utils/api";
 
 const UsersList = ({ user, setUser }) => {
   const [ users, setUsers ] = useState([]);
@@ -24,7 +24,7 @@ const UsersList = ({ user, setUser }) => {
 
   useEffect(
     () => {
-      getData("http://localhost:3001/users")
+      getUsers()
           .then((users) => {
             setUser(users[0]);
             setUsers(users);

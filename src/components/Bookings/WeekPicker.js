@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   TextField,
   Toolbar,
   Typography,
@@ -13,43 +14,44 @@ import {
 } from "@material-ui/icons";
 import { 
   Fragment, 
-  useReducer,
   useState
 } from "react";
 
-import { actions, initializer, reducer } from "./weekReducer";
+import { WeekState } from ".";
+import { shortISO } from "../../utils/date-wrangler";
 
 const useStyles = makeStyles((theme) => ({
-  spacer: {
+  flexSpacer: {
     flexGrow: 1
+  },
+  spacer: {
+    width: 5
   }
 }));
 
-const WeekPicker = ({ date }) => {
+const WeekPicker = ({ dispatch }) => {
   const classes = useStyles();
-  const [ dateText, setDateText ] = useState(null);
-  const [ week, dispatch ] = useReducer(reducer, date, initializer);
+  const [ dateText, setDateText ] = useState(shortISO(new Date()));
 
-  const nextWeek = () => dispatch(actions.nextWeek());
-  const previousWeek = () => dispatch(actions.previousWeek());
-  const setDate = () => dispatch(actions.setDate(new Date(dateText)));
-  const today = () => dispatch(actions.today());
+  const nextWeek = () => dispatch(WeekState.actions.nextWeek());
+  const previousWeek = () => dispatch(WeekState.actions.previousWeek());
+  const setDate = () => dispatch(WeekState.actions.setDate(new Date(dateText)));
+  const today = () => dispatch(WeekState.actions.today());
 
   return (
     <Fragment>
       <Toolbar>
-        <Button color="primary" startIcon={ <ArrowLeft /> } onClick={ previousWeek }>Prev</Button>
+        <Button startIcon={ <ArrowLeft /> } onClick={ previousWeek }>Previous</Button>
+        <Typography className={ classes.flexSpacer } component="div" />
+        <TextField type="date" value={ dateText } onChange={ (event) => setDateText(event.target.value) } />
         <Typography className={ classes.spacer } component="div" />
-        <TextField value={ dateText } placeholder="e.g. 2021-07-06" 
-            onChange={ (event) => setDateText(event.target.value) } />
-        <Button color="primary" startIcon={ <EventAvailable /> } onClick={ setDate }>Go</Button>
-        <Button color="primary" startIcon={ <CalendarToday /> } onClick={ today }>Today</Button>
-        <Typography className={ classes.spacer } component="div"/>
-        <Button color="primary" endIcon={ <ArrowRight /> } onClick={ nextWeek }>Next</Button>
+        <ButtonGroup variant="text">
+          <Button startIcon={ <EventAvailable /> } onClick={ setDate }>Go</Button>
+          <Button startIcon={ <CalendarToday /> } onClick={ today }>Today</Button>
+        </ButtonGroup>
+        <Typography className={ classes.flexSpacer } component="div" />
+        <Button endIcon={ <ArrowRight /> } onClick={ nextWeek }>Next</Button>
       </Toolbar>
-      <Typography variant="body1" component="p" align="center">
-        { week.start.toDateString() } - { week.end.toDateString() }
-      </Typography>
     </Fragment> 
   );
 };
