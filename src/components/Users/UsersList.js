@@ -15,6 +15,7 @@ import {
   useEffect, 
   useState 
 } from "react";
+
 import { getUsers } from "../../utils/api";
 
 const UsersList = ({ user, setUser }) => {
@@ -26,7 +27,6 @@ const UsersList = ({ user, setUser }) => {
     () => {
       getUsers()
           .then((users) => {
-            setUser(users[0]);
             setUsers(users);
             setIsLoading(false);
           })
@@ -49,7 +49,7 @@ const UsersList = ({ user, setUser }) => {
       { 
         !isLoading ? 
         users.map((u) => (
-          <ListItem button selected={ u === user } onClick={ () => setUser(u) }>
+          <ListItem button selected={ u.id === user.id } onClick={ () => setUser(u) }>
             <ListItemIcon>
               <Person />
             </ListItemIcon>

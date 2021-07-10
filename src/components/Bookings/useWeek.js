@@ -1,17 +1,10 @@
+
+import { useReducer } from "react";
 import { getWeek } from "../../utils/date-wrangler";
 
 const ACTION_NEXT_WEEK = "NEXT_WEEK";
 const ACTION_PREVIOUS_WEEK = "PREVIOUS_WEEK";
 const ACTION_SET_DATE = "SET_DATE";
-
-const actions = {
-  nextWeek: () => ({ type: ACTION_NEXT_WEEK }),
-  previousWeek: () => ({ type: ACTION_PREVIOUS_WEEK }),
-  setDate: (date) => ({ type: ACTION_SET_DATE, payload: date }), 
-  today: () => ({ type: ACTION_SET_DATE, payload: new Date() })
-};
-
-const initializer = (date) => getWeek(date);
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -26,10 +19,15 @@ const reducer = (state, action) => {
   }
 };
 
-const WeekState = {
-  actions,
-  initializer,
-  reducer
+const actions = {
+  nextWeek: () => ({ type: ACTION_NEXT_WEEK }),
+  previousWeek: () => ({ type: ACTION_PREVIOUS_WEEK }),
+  setDate: (date) => ({ type: ACTION_SET_DATE, payload: date }), 
+  today: () => ({ type: ACTION_SET_DATE, payload: new Date() })
 };
+const useWeek = (date) => useReducer(reducer, date, getWeek);
 
-export default WeekState;
+export {
+  actions,
+  useWeek
+};

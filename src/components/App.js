@@ -11,6 +11,9 @@ import {
   Event, 
   People
 } from "@material-ui/icons";
+import {
+  useState
+} from "react";
 import { 
   BrowserRouter as Router, 
   Link,
@@ -20,7 +23,7 @@ import {
 
 import { BookablesPage } from "./Bookables";
 import { BookingsPage } from "./Bookings";
-import { UserPicker, UsersPage } from "./Users";
+import { UserContext, UserPicker, UsersPage } from "./Users";
 
 const useStyles = makeStyles(theme => ({
   appbar: {
@@ -33,25 +36,29 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
   const classes = useStyles();
+  const [ user, setUser ] = useState();
+
   return (
-    <Router>
+    <UserContext.Provider value={ user }>
       <CssBaseline />
-      <AppBar position="static" color="transparent" className={ classes.appbar }>
-        <Toolbar>
-          <Tabs className={ classes.menutabs }>
-            <Tab icon={ <Event /> } component={ Link } label="Bookings" to="/bookings" />
-            <Tab icon={ <Category /> } component={ Link } label="Bookables" to="/bookables" />
-            <Tab icon={ <People /> } component={ Link } label="Users" to="/users" />
-          </Tabs>
-          <UserPicker />
-        </Toolbar>
-      </AppBar>
-      <Routes>
-        <Route path="/bookings" element={ <BookingsPage /> } />
-        <Route path="/bookables" element={ <BookablesPage /> } />
-        <Route path="/users" element={ <UsersPage /> } />
-      </Routes>
-    </Router>
+      <Router>
+        <AppBar position="static" color="transparent" className={ classes.appbar }>
+          <Toolbar>
+            <Tabs className={ classes.menutabs }>
+              <Tab icon={ <Event /> } component={ Link } label="Bookings" to="/bookings" />
+              <Tab icon={ <Category /> } component={ Link } label="Bookables" to="/bookables" />
+              <Tab icon={ <People /> } component={ Link } label="Users" to="/users" />
+            </Tabs>
+            <UserPicker user={ user } setUser={ setUser } />
+          </Toolbar>
+        </AppBar>
+        <Routes>
+          <Route path="/bookings" element={ <BookingsPage /> } />
+          <Route path="/bookables" element={ <BookablesPage /> } />
+          <Route path="/users" element={ <UsersPage /> } />
+        </Routes>
+      </Router>
+    </UserContext.Provider>
   );
 };
 

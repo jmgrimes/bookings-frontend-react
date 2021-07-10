@@ -17,7 +17,7 @@ import {
   useState
 } from "react";
 
-import { WeekState } from ".";
+import { actions } from "./useWeek";
 import { shortISO } from "../../utils/date-wrangler";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const WeekPicker = ({ dispatch }) => {
+const WeekPicker = ({ weekDispatch }) => {
   const classes = useStyles();
   const [ dateText, setDateText ] = useState(shortISO(new Date()));
 
-  const nextWeek = () => dispatch(WeekState.actions.nextWeek());
-  const previousWeek = () => dispatch(WeekState.actions.previousWeek());
-  const setDate = () => dispatch(WeekState.actions.setDate(new Date(dateText)));
-  const today = () => dispatch(WeekState.actions.today());
+  const nextWeek = () => weekDispatch(actions.nextWeek());
+  const previousWeek = () => weekDispatch(actions.previousWeek());
+  const setDate = () => weekDispatch(actions.setDate(new Date(dateText)));
+  const today = () => weekDispatch(actions.today());
 
   return (
     <Fragment>
