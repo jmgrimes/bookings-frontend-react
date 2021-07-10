@@ -17,7 +17,6 @@ import {
   useState
 } from "react";
 
-import { actions } from "./useWeek";
 import { shortISO } from "../../utils/date-wrangler";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,28 +28,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const WeekPicker = ({ weekDispatch }) => {
+const WeekPicker = ({ nextWeek, previousWeek, weekOfDate, weekOfToday }) => {
   const classes = useStyles();
   const [ dateText, setDateText ] = useState(shortISO(new Date()));
-
-  const nextWeek = () => weekDispatch(actions.nextWeek());
-  const previousWeek = () => weekDispatch(actions.previousWeek());
-  const setDate = () => weekDispatch(actions.setDate(new Date(dateText)));
-  const today = () => weekDispatch(actions.today());
 
   return (
     <Fragment>
       <Toolbar>
-        <Button startIcon={ <ArrowLeft /> } onClick={ previousWeek }>Previous</Button>
+        <Button startIcon={ <ArrowLeft /> } onClick={ previousWeek() }>Previous</Button>
         <Typography className={ classes.flexSpacer } component="div" />
         <TextField type="date" value={ dateText } onChange={ (event) => setDateText(event.target.value) } />
         <Typography className={ classes.spacer } component="div" />
         <ButtonGroup variant="text">
-          <Button startIcon={ <EventAvailable /> } onClick={ setDate }>Go</Button>
-          <Button startIcon={ <CalendarToday /> } onClick={ today }>Today</Button>
+          <Button startIcon={ <EventAvailable /> } onClick={ weekOfDate(new Date(dateText)) }>Go</Button>
+          <Button startIcon={ <CalendarToday /> } onClick={ weekOfToday() }>Today</Button>
         </ButtonGroup>
         <Typography className={ classes.flexSpacer } component="div" />
-        <Button endIcon={ <ArrowRight /> } onClick={ nextWeek }>Next</Button>
+        <Button endIcon={ <ArrowRight /> } onClick={ nextWeek() }>Next</Button>
       </Toolbar>
     </Fragment> 
   );

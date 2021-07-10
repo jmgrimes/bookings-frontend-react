@@ -1,10 +1,10 @@
 
-import { useReducer } from "react";
+import { useCallback, useReducer } from "react";
 import { getWeek } from "../../utils/date-wrangler";
 
 const ACTION_NEXT_WEEK = "NEXT_WEEK";
 const ACTION_PREVIOUS_WEEK = "PREVIOUS_WEEK";
-const ACTION_SET_DATE = "SET_DATE";
+const ACTION_GO_TO_WEEK_OF_DATE = "GO_TO_WEEK_OF_DATE";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -12,22 +12,38 @@ const reducer = (state, action) => {
       return getWeek(state.date, 7);
     case ACTION_PREVIOUS_WEEK:
       return getWeek(state.date, -7);
-    case ACTION_SET_DATE:
+    case ACTION_GO_TO_WEEK_OF_DATE:
       return getWeek(action.payload);
     default:
       return state;
   }
 };
 
-const actions = {
-  nextWeek: () => ({ type: ACTION_NEXT_WEEK }),
-  previousWeek: () => ({ type: ACTION_PREVIOUS_WEEK }),
-  setDate: (date) => ({ type: ACTION_SET_DATE, payload: date }), 
-  today: () => ({ type: ACTION_SET_DATE, payload: new Date() })
-};
-const useWeek = (date) => useReducer(reducer, date, getWeek);
+const useWeek = (date) => {
+  const [ week, dispatch ] = useReducer(reducer, date, getWeek);
+  const nextWeek = useCallback(
+    () => () => dispatch({ type: ACTION_NEXT_WEEK }), 
+    [ dispatch ]
+  );
+  const previousWeek = useCallback(
+    () => () => dispatch({ type: ACTION_PREVIOUS_WEEK }), 
+    [ dispatch ]
+  );
+  const weekOfDate = useCallback(
+    (date) => () => dispatch({ type: ACTION_GO_TO_WEEK_OF_DATE, payload: date }), 
+    [ dispatch ]
+  );
+  const weekOfToday = useCallback(
+    () => () => dispatch({ type: ACTION_GO_TO_WEEK_OF_DATE, payload: new Date() }), 
+    [ dispatch ]
+  );
+  return {
+    week,
+    nextWeek, 
+    previousWeek,
+    weekOfDate,
+    weekOfToday
+  };
+}
 
-export {
-  actions,
-  useWeek
-};
+export default useWeek;

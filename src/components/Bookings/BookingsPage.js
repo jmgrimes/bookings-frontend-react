@@ -10,10 +10,8 @@ import {
   BookingsGrid, 
   BookingDetails, 
   WeekPicker,
-} from ".";
-import {
   useWeek
-} from "./useWeek";
+} from ".";
 import {
   BookablesList
 } from "../Bookables";
@@ -21,7 +19,7 @@ import {
 const BookingsPage = () => {
   const [ bookable, setBookable ] = useState();
   const [ booking, setBooking ] = useState();
-  const [ week, weekDispatch ] = useWeek(new Date());
+  const { week, nextWeek, previousWeek, weekOfDate, weekOfToday } = useWeek(new Date());
 
   return (
     <Container className="bookings-page" component="main" maxWidth="xl">
@@ -30,7 +28,8 @@ const BookingsPage = () => {
           <BookablesList bookable={ bookable } setBookable= { setBookable } />
         </Grid>
         <Grid item xs={ 7 }>
-          <WeekPicker weekDispatch={ weekDispatch } />
+          <WeekPicker nextWeek={ nextWeek } previousWeek={ previousWeek } 
+              weekOfDate={ weekOfDate } weekOfToday={ weekOfToday } />
           <BookingsGrid week={ week } bookable={ bookable } 
               booking={ booking } setBooking={ setBooking } />
         </Grid>
