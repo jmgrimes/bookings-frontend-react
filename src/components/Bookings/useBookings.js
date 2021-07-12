@@ -1,5 +1,5 @@
-import useFetch from "../../utils/api";
 import { shortISO } from "../../utils/dates";
+import useFetch from "../../utils/useFetch";
 
 const useBookings = (bookableId, startDate, endDate) => {
   const start = shortISO(startDate);

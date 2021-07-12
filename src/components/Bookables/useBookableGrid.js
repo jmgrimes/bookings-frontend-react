@@ -1,11 +1,14 @@
 import { 
+  useMemo 
+} from "react";
+
+import { 
   addDays, 
   shortISO 
 } from "../../utils/dates";
 import { 
   sessions as sessionNames 
 } from "../../static.json";
-import { useMemo } from "react";
 
 const getGrid = (bookable, startDate) => {
   const dates = bookable.days.sort().map((day) => shortISO(addDays(startDate, day)));

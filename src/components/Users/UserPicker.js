@@ -16,7 +16,7 @@ import {
 import {
   isError,
   isLoading
-} from "../../utils/api";
+} from "../../utils/useFetch";
 
 const UserPicker = () => {
   const [ currentUser, setCurrentUser ] = useCurrentUser();

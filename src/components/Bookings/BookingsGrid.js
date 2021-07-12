@@ -14,7 +14,7 @@ import {
 
 import { useBookings } from ".";
 import { useBookableGrid } from "../Bookables";
-import { isComplete } from "../../utils/api";
+import { isComplete } from "../../utils/useFetch";
 
 const transformBookings = (bookingsArray) => {
   return bookingsArray.reduce(

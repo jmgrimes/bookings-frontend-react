@@ -28,7 +28,7 @@ import {
 import { 
   isError, 
   isLoading
-} from "../../utils/api";
+} from "../../utils/useFetch";
 
 const BookablesList = ({ bookable, setBookable }) => {
   const { bookables, error, status } = useBookables();

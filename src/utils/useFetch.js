@@ -13,15 +13,6 @@ const isError = (status) => (status === API_STATUS_ERROR);
 const isIdle = (status) => (status === API_STATUS_IDLE);
 const isLoading = (status) => (status === API_STATUS_LOADING);
 
-const getData = (url) => {
-  return fetch(url).then(response => {
-    if (!response.ok) {
-        throw new Error("There was a problem fetching data from the server.");
-    }
-    return response.json();
-  });
-};
-
 const useFetch = (url) => {
   const [ data, setData ] = useState();
   const [ error, setError ] = useState(null);
@@ -33,7 +24,15 @@ const useFetch = (url) => {
       setStatus(API_STATUS_LOADING);
       setData(undefined);
       setError(null);
-      getData(url)
+      fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+                throw new Error(
+                  `There was a problem fetching data from the url (${ url }).`
+                );
+            }
+            return response.json();
+          })
           .then((data) => {
             if (doUpdate) {
               setData(data);

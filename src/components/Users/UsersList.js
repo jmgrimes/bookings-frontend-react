@@ -18,7 +18,7 @@ import {
 import { 
   isError, 
   isLoading
-} from "../../utils/api";
+} from "../../utils/useFetch";
 
 const UsersList = ({ user, setUser }) => {
   const { users, error, status } = useUsers();
