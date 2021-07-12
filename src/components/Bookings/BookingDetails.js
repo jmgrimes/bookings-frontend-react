@@ -17,7 +17,7 @@ import { UserContext } from "../Users";
 
 const BookingDetails = ({ bookable, booking }) => {
   const user = useContext(UserContext);
-  const isBookingUser = booking && user && (booking.bookerId == user.id);
+  const isBookingUser = booking && user && (booking.bookerId === user.id);
 
   return (
     <Card>
