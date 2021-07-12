@@ -23,7 +23,7 @@ import {
 
 import { BookablesPage } from "./Bookables";
 import { BookingsPage } from "./Bookings";
-import { UserContext, UserPicker, UsersPage } from "./Users";
+import { UserPicker, UserProvider, UsersPage } from "./Users";
 
 const useStyles = makeStyles(theme => ({
   appbar: {
@@ -36,10 +36,9 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
   const classes = useStyles();
-  const [ user, setUser ] = useState();
 
   return (
-    <UserContext.Provider value={ user }>
+    <UserProvider>
       <CssBaseline />
       <Router>
         <AppBar position="static" color="transparent" className={ classes.appbar }>
@@ -49,7 +48,7 @@ const App = () => {
               <Tab icon={ <Category /> } component={ Link } label="Bookables" to="/bookables" />
               <Tab icon={ <People /> } component={ Link } label="Users" to="/users" />
             </Tabs>
-            <UserPicker user={ user } setUser={ setUser } />
+            <UserPicker />
           </Toolbar>
         </AppBar>
         <Routes>
@@ -58,7 +57,7 @@ const App = () => {
           <Route path="/users" element={ <UsersPage /> } />
         </Routes>
       </Router>
-    </UserContext.Provider>
+    </UserProvider>
   );
 };
 

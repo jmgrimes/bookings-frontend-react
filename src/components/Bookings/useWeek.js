@@ -22,19 +22,19 @@ const reducer = (state, action) => {
 const useWeek = (date) => {
   const [ week, dispatch ] = useReducer(reducer, date, getWeek);
   const nextWeek = useCallback(
-    () => () => dispatch({ type: ACTION_NEXT_WEEK }), 
+    () => (() => dispatch({ type: ACTION_NEXT_WEEK })), 
     [ dispatch ]
   );
   const previousWeek = useCallback(
-    () => () => dispatch({ type: ACTION_PREVIOUS_WEEK }), 
+    () => (() => dispatch({ type: ACTION_PREVIOUS_WEEK })), 
     [ dispatch ]
   );
   const weekOfDate = useCallback(
-    (date) => () => dispatch({ type: ACTION_GO_TO_WEEK_OF_DATE, payload: date }), 
+    (date) => (() => dispatch({ type: ACTION_GO_TO_WEEK_OF_DATE, payload: date })), 
     [ dispatch ]
   );
   const weekOfToday = useCallback(
-    () => () => dispatch({ type: ACTION_GO_TO_WEEK_OF_DATE, payload: new Date() }), 
+    () => (() => dispatch({ type: ACTION_GO_TO_WEEK_OF_DATE, payload: new Date() })), 
     [ dispatch ]
   );
   return {

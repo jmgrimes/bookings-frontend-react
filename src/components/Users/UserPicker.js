@@ -5,11 +5,19 @@ import {
   Select
 } from "@material-ui/core";
 import {
+  useContext,
   useEffect,
   useState
 } from "react";
 
-const UserPicker = ({ user, setUser }) => {
+import { 
+  UserContext, 
+  UserSetContext 
+} from ".";
+
+const UserPicker = () => {
+  const user = useContext(UserContext);
+  const setUser = useContext(UserSetContext);
   const [ users, setUsers ] = useState();
 
   const changeUser = (event) => {

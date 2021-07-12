@@ -1,4 +1,8 @@
-import UserContext from "./UserContext";
+import { 
+  UserContext, 
+  UserProvider, 
+  UserSetContext 
+} from "./UserContext";
 import UserDetails from "./UserDetails";
 import UserPicker from "./UserPicker";
 import UsersList from "./UsersList";
@@ -8,6 +12,8 @@ export {
   UserContext,
   UserDetails,
   UserPicker,
+  UserProvider,
+  UserSetContext,
   UsersList,
   UsersPage
 };
