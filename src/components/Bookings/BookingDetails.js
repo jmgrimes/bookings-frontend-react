@@ -6,6 +6,7 @@ import {
   Typography 
 } from "@material-ui/core";
 import {
+  Add,
   Edit
 } from "@material-ui/icons"
 import {
@@ -22,10 +23,18 @@ const BookingDetails = ({ bookable, booking }) => {
   return (
     <Card>
       <CardHeader title="Booking Details" action={
-        isBookingUser &&
-        <IconButton>
-          <Edit />
-        </IconButton>
+        booking.bookerId ? 
+        (
+          isBookingUser &&
+          <IconButton>
+            <Edit />
+          </IconButton> 
+        ) :
+        (
+          <IconButton>
+            <Add />
+          </IconButton>
+        )
       } />
       <CardContent>
         { 
