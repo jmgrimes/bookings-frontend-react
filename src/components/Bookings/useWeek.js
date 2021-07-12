@@ -1,6 +1,5 @@
-
 import { useCallback, useReducer } from "react";
-import { getWeek } from "../../utils/date-wrangler";
+import { getWeek } from "../../utils/dates";
 
 const ACTION_NEXT_WEEK = "NEXT_WEEK";
 const ACTION_PREVIOUS_WEEK = "PREVIOUS_WEEK";

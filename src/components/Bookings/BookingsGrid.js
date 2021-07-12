@@ -9,43 +9,12 @@ import {
 } from "@material-ui/core";
 import { 
   Fragment, 
-  useEffect, 
-  useMemo, 
-  useState 
+  useEffect
 } from "react";
 
-import { 
-  getBookings 
-} from "../../utils/api";
-import { 
-  addDays, 
-  shortISO 
-} from "../../utils/date-wrangler";
-import { 
-  sessions as sessionNames 
-} from "../../static.json";
-
-const getGrid = (bookable, startDate) => {
-  const dates = bookable.days.sort().map((day) => shortISO(addDays(startDate, day)));
-  const sessions = bookable.sessions.map((session) => sessionNames[session]);
-  const grid = {};
-  sessions.forEach((session) => {
-    grid[session] = {};
-    dates.forEach((date) => {
-      grid[session][date] = {
-        session,
-        date,
-        bookableId: bookable.id,
-        title: ""
-      };
-    });
-  });
-  return {
-    grid,
-    dates,
-    sessions
-  };
-};
+import { useBookings } from ".";
+import { useBookableGrid } from "../Bookables";
+import { isComplete } from "../../utils/api";
 
 const transformBookings = (bookingsArray) => {
   return bookingsArray.reduce(
@@ -80,12 +49,10 @@ const useStyles = makeStyles(theme => ({
 
 const BookingsGrid = ({ week, bookable, booking, setBooking }) => {
   const classes = useStyles();
-  const [ bookings, setBookings ] = useState();
-  const [ error, setError ] = useState(false);
-  const { grid, sessions, dates } = useMemo(
-    () => bookable ? getGrid(bookable, week.start) : { },
-    [ bookable, week.start ]
-  );
+  const { grid, sessions, dates } = useBookableGrid(bookable, week.start);
+  const { bookings : bookingsArray, error, status } = useBookings(bookable?.id, week.start, week.end);
+
+  const bookings = bookingsArray ? transformBookings(bookingsArray) : { }; 
 
   const cell = (session, date) => {
     const cellData = bookings?.[session]?.[date] || grid[session][date];
@@ -93,7 +60,7 @@ const BookingsGrid = ({ week, bookable, booking, setBooking }) => {
     return (
       <TableCell variant="body" align="center"
           className={ isSelected ? classes.bookingSelected : classes.booking } 
-          onClick={ bookings ? () => setBooking(cellData) : null }
+          onClick={ isComplete(status) ? () => setBooking(cellData) : null }
           key={ date }>
         {cellData.title}
       </TableCell>
@@ -102,24 +69,9 @@ const BookingsGrid = ({ week, bookable, booking, setBooking }) => {
 
   useEffect(
     () => {
-      if (bookable) {
-        let doUpdate = true;
-        setBookings(null);
-        setBooking(null);
-        setError(false);
-        getBookings(bookable.id, week.start, week.end)
-            .then((bookings) => {
-              if (doUpdate) {
-                setBookings(transformBookings(bookings));
-              }
-            })
-            .catch(setError);
-        return () => {
-          doUpdate = false;
-        };
-      }
+      setBooking(null);
     },
-    [ week, bookable, setBooking ]
+    [ bookable, week.start, setBooking ]
   );
 
   if (!grid) {

@@ -1,4 +1,17 @@
-import { shortISO } from "./date-wrangler";
+import {
+  useEffect,
+  useState
+} from "react";
+
+const API_STATUS_DONE = "done";
+const API_STATUS_ERROR = "error";
+const API_STATUS_IDLE = "idle";
+const API_STATUS_LOADING = "loading";
+
+const isComplete = (status) => (status === API_STATUS_DONE);
+const isError = (status) => (status === API_STATUS_ERROR);
+const isIdle = (status) => (status === API_STATUS_IDLE);
+const isLoading = (status) => (status === API_STATUS_LOADING);
 
 const getData = (url) => {
   return fetch(url).then(response => {
@@ -9,26 +22,42 @@ const getData = (url) => {
   });
 };
 
-const getBookables = () => {
-  const urlRoot = "http://localhost:3001/bookables";
-  return getData(`${urlRoot}`);
-}
+const useFetch = (url) => {
+  const [ data, setData ] = useState();
+  const [ error, setError ] = useState(null);
+  const [ status, setStatus ] = useState(API_STATUS_IDLE);
 
-const getBookings = (bookableId, startDate, endDate) => {
-  const start = shortISO(startDate);
-  const end = shortISO(endDate);
-  const urlRoot = "http://localhost:3001/bookings";
-  const query = `bookableId=${bookableId}&date_gte=${start}&date_lte=${end}`;
-  return getData(`${urlRoot}?${query}`);
-}
+  useEffect(
+    () => {
+      let doUpdate = true;
+      setStatus(API_STATUS_LOADING);
+      setData(undefined);
+      setError(null);
+      getData(url)
+          .then((data) => {
+            if (doUpdate) {
+              setData(data);
+              setStatus(API_STATUS_DONE);
+            }
+          })
+          .catch((error) => {
+            if (doUpdate) {
+              setError(error);
+              setStatus(API_STATUS_ERROR);
+            }
+          });
+      return () => (doUpdate = false);
+    },
+    [ url ]
+  );
 
-const getUsers = () => {
-  const urlRoot = "http://localhost:3001/users";
-  return getData(`${urlRoot}`);
+  return { data, error, status };
 }
 
 export {
-  getBookables,
-  getBookings,
-  getUsers
+  isComplete,
+  isError,
+  isIdle,
+  isLoading
 };
+export default useFetch;

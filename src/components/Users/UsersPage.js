@@ -3,19 +3,18 @@ import {
   Grid 
 } from "@material-ui/core";
 import {
-  useContext,
   useState
 } from "react";
 
 import { 
-  UserContext,
   UserDetails, 
-  UsersList 
+  UsersList,
+  useCurrentUser
 } from ".";
 
 const UsersPage = () => {
   const [ user, setUser ] = useState();
-  const currentUser = useContext(UserContext);
+  const [ currentUser ] = useCurrentUser();
 
   return (
     <Container className="users-page" component="main" maxWidth="lg">

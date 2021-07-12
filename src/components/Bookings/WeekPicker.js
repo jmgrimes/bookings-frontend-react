@@ -17,7 +17,7 @@ import {
   useState
 } from "react";
 
-import { shortISO } from "../../utils/date-wrangler";
+import { shortISO } from "../../utils/dates";
 
 const useStyles = makeStyles((theme) => ({
   flexSpacer: {

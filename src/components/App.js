@@ -18,9 +18,17 @@ import {
   Route
 } from "react-router-dom";
 
-import { BookablesPage } from "./Bookables";
-import { BookingsPage } from "./Bookings";
-import { UserPicker, UserProvider, UsersPage } from "./Users";
+import { 
+  BookablesPage 
+} from "./Bookables";
+import { 
+  BookingsPage 
+} from "./Bookings";
+import { 
+  CurrentUserProvider,
+  UserPicker, 
+  UsersPage 
+} from "./Users";
 
 const useStyles = makeStyles(theme => ({
   appbar: {
@@ -35,7 +43,7 @@ const App = () => {
   const classes = useStyles();
 
   return (
-    <UserProvider>
+    <CurrentUserProvider>
       <CssBaseline />
       <Router>
         <AppBar position="static" color="transparent" className={ classes.appbar }>
@@ -54,7 +62,7 @@ const App = () => {
           <Route path="/users" element={ <UsersPage /> } />
         </Routes>
       </Router>
-    </UserProvider>
+    </CurrentUserProvider>
   );
 };
 

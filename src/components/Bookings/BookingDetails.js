@@ -9,21 +9,18 @@ import {
   Add,
   Edit
 } from "@material-ui/icons"
-import {
-  useContext
-} from "react";
 
 import { Booking } from ".";
-import { UserContext } from "../Users";
+import { useCurrentUser } from "../Users";
 
 const BookingDetails = ({ bookable, booking }) => {
-  const user = useContext(UserContext);
-  const isBookingUser = booking && user && (booking.bookerId === user.id);
+  const [ currentUser ] = useCurrentUser();
+  const isBookingUser = booking && currentUser && (booking.bookerId === currentUser.id);
 
   return (
     <Card>
       <CardHeader title="Booking Details" action={
-        booking.bookerId ? 
+        booking?.bookerId ? 
         (
           isBookingUser &&
           <IconButton>

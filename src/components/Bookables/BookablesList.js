@@ -19,16 +19,19 @@ import {
 } from "@material-ui/lab";
 import { 
   Fragment, 
-  useEffect,
-  useState
+  useEffect
 } from "react";
 
-import { getBookables } from "../../utils/api";
+import {
+  useBookables
+} from ".";
+import { 
+  isError, 
+  isLoading
+} from "../../utils/api";
 
 const BookablesList = ({ bookable, setBookable }) => {
-  const [ bookables, setBookables ] = useState([]);
-  const [ error, setError ] = useState(false);
-  const [ isLoading, setIsLoading ] = useState(true);
+  const { bookables, error, status } = useBookables();
   
   const group = bookable?.group;
   const groups = [ ...new Set(bookables.map(bookable => bookable.group)) ];
@@ -56,36 +59,49 @@ const BookablesList = ({ bookable, setBookable }) => {
 
   useEffect(
     () => {
-      getBookables()
-          .then((bookables) => {
-            setBookable(bookables[0]);
-            setBookables(bookables);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            setError(error);
-            setIsLoading(false);
-          });
+      setBookable(bookables[0]);
     }, 
-    [ setBookable ]
+    [ bookables, setBookable ]
   );
 
-  if (error) {
+  if (isError(status)) {
     return (
-      <Typography variant="body1" component="p">{ error }</Typography>
+      <Typography variant="body1" component="p">{ error.message }</Typography>
+    )
+  }
+
+  if (isLoading(status)) {
+    return (
+      <List>
+        <ListItem button>
+          <ListItemIcon>
+            <Category />
+          </ListItemIcon>
+          <ListItemText primary={ <Skeleton animation="wave"/> } />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <Category />
+          </ListItemIcon>
+          <ListItemText primary={ <Skeleton animation="wave"/> } />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <Category />
+          </ListItemIcon>
+          <ListItemText primary={ <Skeleton animation="wave"/> } />
+        </ListItem>
+      </List>
     )
   }
 
   return (
     <Fragment>
-      {!isLoading && 
-        <Select fullWidth value={ group } onChange={ (event) => changeGroup(event.target.value) }>
-          { groups.map(group => <MenuItem value={ group } key={ group }>{ group }</MenuItem>) }
-        </Select> 
-      }
+      <Select fullWidth value={ group } onChange={ (event) => changeGroup(event.target.value) }>
+        { groups.map(group => <MenuItem value={ group } key={ group }>{ group }</MenuItem>) }
+      </Select> 
       <List>
         {
-          !isLoading ? 
           bookablesInGroup.map((b) => (
             <ListItem key={ b.id } selected={ b === bookable } onClick={ () => setBookable(b) }>
               <ListItemIcon>
@@ -93,23 +109,13 @@ const BookablesList = ({ bookable, setBookable }) => {
               </ListItemIcon>
               <ListItemText primary={ b.title } />
             </ListItem>
-          )) : 
-          [...Array(3)].map(() => (
-            <ListItem button>
-              <ListItemIcon>
-                <Category />
-              </ListItemIcon>
-              <ListItemText primary={ <Skeleton animation="wave"/> } />
-            </ListItem>
           ))
         }
       </List>
-      {!isLoading && 
-        <ButtonGroup fullWidth variant="outlined">
-          <Button color="primary" startIcon={ <ArrowLeft /> } onClick={ previousBookable }>Prev</Button>
-          <Button color="primary" endIcon={ <ArrowRight /> } onClick={ nextBookable }>Next</Button>
-        </ButtonGroup> 
-      }
+      <ButtonGroup fullWidth variant="outlined">
+        <Button color="primary" startIcon={ <ArrowLeft /> } onClick={ previousBookable }>Prev</Button>
+        <Button color="primary" endIcon={ <ArrowRight /> } onClick={ nextBookable }>Next</Button>
+      </ButtonGroup> 
     </Fragment>
   );
 };

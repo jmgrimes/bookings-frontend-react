@@ -11,57 +11,58 @@ import {
 import { 
   Person 
 } from "@material-ui/icons";
-import { 
-  useEffect, 
-  useState 
-} from "react";
 
-import { getUsers } from "../../utils/api";
+import {
+  useUsers
+} from ".";
+import { 
+  isError, 
+  isLoading
+} from "../../utils/api";
 
 const UsersList = ({ user, setUser }) => {
-  const [ users, setUsers ] = useState([]);
-  const [ error, setError ] = useState(false);
-  const [ isLoading, setIsLoading ] = useState(true);  
+  const { users, error, status } = useUsers();
 
-  useEffect(
-    () => {
-      getUsers()
-          .then((users) => {
-            setUsers(users);
-            setIsLoading(false);
-          })
-          .catch(error => {
-            setError(error);
-            setIsLoading(false);
-          });
-    }, 
-    [ setUser ]
-  );
-
-  if (error) {
+  if (isError(status)) {
     return (
-      <Typography variant="body1" component="p">{ error }</Typography>
+      <Typography variant="body1" component="p">{ error.message }</Typography>
     )
+  }
+
+  if (isLoading(status)) {
+    return (
+      <List item>
+        <ListItem button>
+          <ListItemIcon>
+            <Person />
+          </ListItemIcon>
+          <ListItemText primary={ <Skeleton animation="wave" /> } />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <Person />
+          </ListItemIcon>
+          <ListItemText primary={ <Skeleton animation="wave" /> } />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <Person />
+          </ListItemIcon>
+          <ListItemText primary={ <Skeleton animation="wave" /> } />
+        </ListItem>
+      </List>
+    );
   }
 
   return (
     <List item>
       { 
-        !isLoading ? 
         users.map((u) => (
           <ListItem button selected={ u.id === user.id } onClick={ () => setUser(u) }>
             <ListItemIcon>
               <Person />
             </ListItemIcon>
             <ListItemText primary={ u.name } />
-          </ListItem>
-        )) :
-        [...Array(3)].map(() => (
-          <ListItem button>
-            <ListItemIcon>
-              <Person />
-            </ListItemIcon>
-            <ListItemText primary={ <Skeleton animation="wave" /> } />
           </ListItem>
         ))
       }
