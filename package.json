@@ -1,11 +1,10 @@
 {
   "name": "booking-app",
-  "version": "0.1.0",
+  "version": "2021.28.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.58",
     "history": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
