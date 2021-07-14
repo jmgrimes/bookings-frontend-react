@@ -3,7 +3,7 @@ import BookablesPage from "./BookablesPage";
 import useBookables from "./useBookables";
 
 export {
-  BookablesList,
-  BookablesPage,
-  useBookables
+    BookablesList,
+    BookablesPage,
+    useBookables
 };
