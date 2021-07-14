@@ -3,12 +3,12 @@ import {
 } from "react";
 
 import { 
+  sessions as sessionNames 
+} from "../../static.json";
+import { 
   addDays, 
   shortISO 
 } from "../../utils/dates";
-import { 
-  sessions as sessionNames 
-} from "../../static.json";
 
 const getGrid = (bookable, startDate) => {
   const dates = bookable.days.sort().map((day) => shortISO(addDays(startDate, day)));
@@ -32,11 +32,11 @@ const getGrid = (bookable, startDate) => {
   };
 };
 
-const useBookableGrid = (bookable, startDate) => {
+const useGrid = (bookable, startDate) => {
   return useMemo(
     () => bookable ? getGrid(bookable, startDate) : { },
     [ bookable, startDate ]
   );
 }
 
-export default useBookableGrid;
+export default useGrid;

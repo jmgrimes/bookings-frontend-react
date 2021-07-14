@@ -1,36 +1,51 @@
 import { 
+  CircularProgress,
   Table, 
   TableBody, 
   TableCell, 
   TableHead, 
   TableRow, 
   Typography, 
-  makeStyles 
+  makeStyles
 } from "@material-ui/core";
 import { 
-  Fragment, 
+  Fragment,
   useEffect
 } from "react";
 
-import { useBookings } from ".";
-import { useBookableGrid } from "../Bookables";
-import { isComplete } from "../../utils/useFetch";
+import { 
+  getWeek, 
+  shortISO 
+} from "../../utils/dates";
+import { 
+  isComplete, 
+  isError, 
+  isLoading 
+} from "../../utils/useFetch";
+
+import useBookings from "./useBookings";
+import useBookingsParams from "./useBookingsParams";
+import useGrid from "./useGrid";
 
 const transformBookings = (bookingsArray) => {
-  return bookingsArray.reduce(
-    (bookings, booking) => {
-      const { session, date } = booking;
-      if (!bookings[session]) {
-        bookings[session] = {};
-      }
-      bookings[session][date] = booking;
-      return bookings;
-    },
+  return (
+    bookingsArray ? 
+    bookingsArray.reduce(
+      (bookings, booking) => {
+        const { session, date } = booking;
+        if (!bookings[session]) {
+          bookings[session] = {};
+        }
+        bookings[session][date] = booking;
+        return bookings;
+      },
+      { }
+    ) :
     { }
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     color: theme.palette.primary.contrastText,
     background: theme.palette.primary.dark
@@ -47,12 +62,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BookingsGrid = ({ week, bookable, booking, setBooking }) => {
+const BookingsGrid = ({ bookable, booking, setBooking }) => {
   const classes = useStyles();
-  const { grid, sessions, dates } = useBookableGrid(bookable, week.start);
-  const { bookings : bookingsArray, error, status } = useBookings(bookable?.id, week.start, week.end);
 
-  const bookings = bookingsArray ? transformBookings(bookingsArray) : { }; 
+  const { date } = useBookingsParams();
+  const week = getWeek(date);
+  const weekStart = shortISO(week.start);
+
+  const { bookings : bookingsArray, error, status } = useBookings(bookable?.id, week.start, week.end);
+  const bookings = transformBookings(bookingsArray);
+
+  const { grid, sessions, dates } = useGrid(bookable, week.start);
+
+  useEffect(
+    () => {
+      setBooking(null);
+    },
+    [ bookable, weekStart, setBooking ]
+  );
 
   const cell = (session, date) => {
     const cellData = bookings?.[session]?.[date] || grid[session][date];
@@ -61,40 +88,34 @@ const BookingsGrid = ({ week, bookable, booking, setBooking }) => {
       <TableCell variant="body" align="center"
           className={ isSelected ? classes.bookingSelected : classes.booking } 
           onClick={ isComplete(status) ? () => setBooking(cellData) : null }
-          key={ date }>
-        {cellData.title}
+          key={ `${ session }-${ date }-cell` }>
+        { cellData.title }
       </TableCell>
     )
   }
 
-  useEffect(
-    () => {
-      setBooking(null);
-    },
-    [ bookable, week.start, setBooking ]
-  );
-
-  if (!grid) {
+  if (!grid || isLoading(status)) {
     return <Typography variant="body1" component="p">Loading...</Typography>
   }
 
   return (
     <Fragment>
-      { 
-        error &&
-        <Typography variant="body1" component="p">
-          {`There was a problem loading the bookings data (${error}).`}
-        </Typography>
+      {
+        isError(status) &&
+        <Typography variant="body1" component="p">${ error.message }</Typography>
       }
       <Table>
         <TableHead>
-          <TableRow>
-            <TableCell align="center" className={ classes.header }>
-
+          <TableRow key="header">
+            <TableCell align="center" className={ classes.header } key="progress">
+              {
+                isLoading(status) &&
+                <CircularProgress />
+              }
             </TableCell>
             { 
               dates.map((date) => (
-                <TableCell align="center" className={ classes.header }>
+                <TableCell align="center" className={ classes.header } key={ `${ date }-header` }>
                   {new Date(date).toDateString()}
                 </TableCell>
               ))
@@ -104,8 +125,10 @@ const BookingsGrid = ({ week, bookable, booking, setBooking }) => {
         <TableBody>
           {
             sessions.map((session) => (
-              <TableRow>
-                <TableCell align="center" className={ classes.header }>{ session }</TableCell>
+              <TableRow key={ `${ session }-row` }>
+                <TableCell align="center" className={ classes.header } key={ `${ session }-header` }>
+                  { session }
+                </TableCell>
                 { dates.map((date) => cell(session, date)) }
               </TableRow>
             ))

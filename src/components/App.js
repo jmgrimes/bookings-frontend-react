@@ -7,7 +7,7 @@ import {
   makeStyles
 } from "@material-ui/core";
 import {
-  Category, 
+  DevicesOther,
   Event, 
   People
 } from "@material-ui/icons";
@@ -15,7 +15,8 @@ import {
   BrowserRouter as Router, 
   Link,
   Routes, 
-  Route
+  Route,
+  useLocation
 } from "react-router-dom";
 
 import { 
@@ -25,12 +26,12 @@ import {
   BookingsPage 
 } from "./Bookings";
 import { 
-  CurrentUserProvider,
+  UserProvider,
   UserPicker, 
   UsersPage 
 } from "./Users";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appbar: {
     marginBottom: 20
   },
@@ -39,30 +40,37 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const App = () => {
+const AppNavigation = () => {
   const classes = useStyles();
-
+  const location = useLocation();
+  const selectedTab = location.pathname.split("/").filter(path => path)?.[0];
   return (
-    <CurrentUserProvider>
-      <CssBaseline />
-      <Router>
-        <AppBar position="static" color="transparent" className={ classes.appbar }>
-          <Toolbar>
-            <Tabs className={ classes.menutabs }>
-              <Tab icon={ <Event /> } component={ Link } label="Bookings" to="/bookings" />
-              <Tab icon={ <Category /> } component={ Link } label="Bookables" to="/bookables" />
-              <Tab icon={ <People /> } component={ Link } label="Users" to="/users" />
-            </Tabs>
-            <UserPicker />
-          </Toolbar>
-        </AppBar>
+    <AppBar position="static" color="transparent" className={ classes.appbar }>
+      <Toolbar>
+        <Tabs value={ selectedTab } className={ classes.menutabs }>
+          <Tab value="bookings" icon={ <Event /> } component={ Link } label="Bookings" to="/bookings" />
+          <Tab value="bookables" icon={ <DevicesOther /> } component={ Link } label="Bookables" to="/bookables" />
+          <Tab value="users" icon={ <People /> } component={ Link } label="Users" to="/users" />
+        </Tabs>
+        <UserPicker />
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+const App = () => {
+  return (
+    <Router>
+      <UserProvider>
+        <CssBaseline />
+        <AppNavigation />
         <Routes>
           <Route path="/bookings" element={ <BookingsPage /> } />
-          <Route path="/bookables" element={ <BookablesPage /> } />
-          <Route path="/users" element={ <UsersPage /> } />
+          <Route path="/bookables/*" element={ <BookablesPage /> } />
+          <Route path="/users/*" element={ <UsersPage /> } />
         </Routes>
-      </Router>
-    </CurrentUserProvider>
+      </UserProvider>
+    </Router>
   );
 };
 

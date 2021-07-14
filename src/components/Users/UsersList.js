@@ -2,63 +2,22 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
-  Typography
+  ListItemText
 } from "@material-ui/core";
-import {
-  Skeleton
-} from "@material-ui/lab";
 import { 
   Person 
 } from "@material-ui/icons";
-
-import {
-  useUsers
-} from ".";
 import { 
-  isError, 
-  isLoading
-} from "../../utils/useFetch";
+  useNavigate 
+} from "react-router-dom";
 
-const UsersList = ({ user, setUser }) => {
-  const { users, error, status } = useUsers();
-
-  if (isError(status)) {
-    return (
-      <Typography variant="body1" component="p">{ error.message }</Typography>
-    )
-  }
-
-  if (isLoading(status)) {
-    return (
-      <List item>
-        <ListItem button>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          <ListItemText primary={ <Skeleton animation="wave" /> } />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          <ListItemText primary={ <Skeleton animation="wave" /> } />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          <ListItemText primary={ <Skeleton animation="wave" /> } />
-        </ListItem>
-      </List>
-    );
-  }
-
+const UsersList = ({ users, user, getUrl }) => {
+  const navigate = useNavigate();
   return (
     <List item>
       { 
         users.map((u) => (
-          <ListItem button selected={ u.id === user.id } onClick={ () => setUser(u) }>
+          <ListItem button key={ u.id } selected={ u.id === user.id } onClick={ () => navigate(getUrl(u.id)) }>
             <ListItemIcon>
               <Person />
             </ListItemIcon>

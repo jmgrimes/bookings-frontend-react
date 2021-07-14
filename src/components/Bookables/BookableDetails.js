@@ -2,22 +2,28 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Checkbox,
-  FormControlLabel,
   Grid,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography
+  Typography,
+  IconButton
 } from "@material-ui/core";
 import { 
   CalendarToday,
-  Event
+  Edit,
+  Event,
+  Visibility,
+  VisibilityOff
 } from "@material-ui/icons";
 import { 
+  Fragment,
   useState
 } from "react";
+import {
+  Link
+} from "react-router-dom";
 
 import {
   days,
@@ -34,10 +40,18 @@ const BookableDetails = ({ bookable }) => {
       <CardHeader 
           title={ bookable.title } 
           action={ 
-            <FormControlLabel 
-                label="Show Details" 
-                control={ <Checkbox checked={ showDetails } onChange={ toggleDetails } /> } 
-            />
+            <Fragment>
+              <IconButton onClick={ toggleDetails }>
+                {
+                  showDetails ?
+                  <VisibilityOff title="Hide Details" /> :
+                  <Visibility title="Show Details" />
+                }
+              </IconButton>
+              <IconButton component={ Link } to={ `/bookables/${ bookable.id }/edit` }>
+                <Edit />
+              </IconButton>
+            </Fragment>
           } 
       />
       <CardContent>

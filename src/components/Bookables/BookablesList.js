@@ -6,106 +6,57 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
-  Select,
-  Typography
+  Select
 } from "@material-ui/core";
 import { 
   ArrowLeft,
   ArrowRight,
-  Category,
+  DevicesOther
 } from "@material-ui/icons";
-import {
-  Skeleton
-} from "@material-ui/lab";
 import { 
-  Fragment, 
-  useEffect
+  Fragment
 } from "react";
-
 import {
-  useBookables
-} from ".";
-import { 
-  isError, 
-  isLoading
-} from "../../utils/useFetch";
+  useNavigate
+} from "react-router-dom";
 
-const BookablesList = ({ bookable, setBookable }) => {
-  const { bookables, error, status } = useBookables();
+const BookablesList = ({ bookable, bookables, getUrl }) => {
+  const navigate = useNavigate();
   
   const group = bookable?.group;
-  const groups = [ ...new Set(bookables.map(bookable => bookable.group)) ];
-  const bookablesInGroup = bookables.filter(bookable => bookable.group === group);
+  const groups = [ ...new Set(bookables.map((b) => (b.group))) ];
+  const bookablesInGroup = bookables.filter((b) => (b.group === group));
 
   const changeGroup = (group) => {
-    const bookablesInSelectedGroup = bookables.filter(bookable => bookable.group === group);
-    const targetBookable = bookablesInSelectedGroup[0];
-    setBookable(targetBookable);
+    const bookablesInSelectedGroup = bookables.filter((b) => (b.group === group));
+    navigate(getUrl(bookablesInSelectedGroup[0].id));
   }
 
   const nextBookable = () => {
     const currentIndex = bookablesInGroup.indexOf(bookable);
     const nextIndex = (currentIndex + 1) % bookablesInGroup.length;
     const nextBookable = bookablesInGroup[nextIndex];
-    setBookable(nextBookable);
+    navigate(getUrl(nextBookable.id));
   }
 
   const previousBookable = () => {
     const currentIndex = bookablesInGroup.indexOf(bookable);
     const previousIndex = (bookablesInGroup.length + currentIndex - 1) % bookablesInGroup.length;
     const previousBookable = bookablesInGroup[previousIndex];
-    setBookable(previousBookable);
-  }
-
-  useEffect(
-    () => {
-      setBookable(bookables[0]);
-    }, 
-    [ bookables, setBookable ]
-  );
-
-  if (isError(status)) {
-    return (
-      <Typography variant="body1" component="p">{ error.message }</Typography>
-    )
-  }
-
-  if (isLoading(status)) {
-    return (
-      <List>
-        <ListItem button>
-          <ListItemIcon>
-            <Category />
-          </ListItemIcon>
-          <ListItemText primary={ <Skeleton animation="wave"/> } />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Category />
-          </ListItemIcon>
-          <ListItemText primary={ <Skeleton animation="wave"/> } />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Category />
-          </ListItemIcon>
-          <ListItemText primary={ <Skeleton animation="wave"/> } />
-        </ListItem>
-      </List>
-    )
+    navigate(getUrl(previousBookable.id));
   }
 
   return (
     <Fragment>
-      <Select fullWidth value={ group } onChange={ (event) => changeGroup(event.target.value) }>
+      <Select fullWidth value={ group || "" } onChange={ (event) => changeGroup(event.target.value) }>
         { groups.map(group => <MenuItem value={ group } key={ group }>{ group }</MenuItem>) }
       </Select> 
       <List>
         {
           bookablesInGroup.map((b) => (
-            <ListItem key={ b.id } selected={ b === bookable } onClick={ () => setBookable(b) }>
+            <ListItem button key={ b.id } selected={ b === bookable } onClick={ () => navigate(getUrl(b.id)) }>
               <ListItemIcon>
-                <Category />
+                <DevicesOther />
               </ListItemIcon>
               <ListItemText primary={ b.title } />
             </ListItem>

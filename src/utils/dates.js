@@ -18,8 +18,13 @@ const shortISO = (date) => {
   return date.toISOString().split("T")[0];
 };
 
+const isDate = (date) => {
+  return !isNaN(Date.parse(date));
+};
+
 export { 
   addDays, 
   getWeek,
+  isDate,
   shortISO
 };

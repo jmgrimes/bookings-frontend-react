@@ -10,12 +10,13 @@ import {
   Edit
 } from "@material-ui/icons"
 
-import { Booking } from ".";
-import { useCurrentUser } from "../Users";
+import { useUser } from "../Users";
+
+import Booking from "./Booking";
 
 const BookingDetails = ({ bookable, booking }) => {
-  const [ currentUser ] = useCurrentUser();
-  const isBookingUser = booking && currentUser && (booking.bookerId === currentUser.id);
+  const [ user ] = useUser();
+  const isBookingUser = booking && user && (booking.bookerId === user.id);
 
   return (
     <Card>

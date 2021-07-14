@@ -1,29 +1,32 @@
 import { 
-  Container,
-  Grid
+  Container
 } from "@material-ui/core";
-import { 
-  useState 
-} from "react";
+import {
+  Route,
+  Routes
+} from "react-router-dom";
 
-import { 
-  BookableDetails, 
-  BookablesList 
-} from ".";
+import BookableEdit from "./BookableEdit";
+import BookableNew from "./BookableNew";
+import BookablesView from "./BookablesView";
 
 const BookablesPage = () => {
-  const [ bookable, setBookable ] = useState();
-
   return (
     <Container className="bookables-page" component="main" maxWidth="lg">
-      <Grid container spacing={ 3 }>
-        <Grid item xs={ 3 }>
-          <BookablesList bookable={ bookable } setBookable={ setBookable } />
-        </Grid>
-        <Grid item xs={ 9 }>
-          <BookableDetails bookable={ bookable } />
-        </Grid>
-      </Grid>
+      <Routes>
+        <Route path="/">
+          <BookablesView />
+        </Route>
+        <Route path="/:id">
+          <BookablesView />
+        </Route>
+        <Route path="/:id/edit">
+          <BookableEdit />
+        </Route>
+        <Route path="/new">
+          <BookableNew />
+        </Route>
+      </Routes>
     </Container>
   );
 };

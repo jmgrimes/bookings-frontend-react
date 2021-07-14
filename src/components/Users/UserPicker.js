@@ -9,30 +9,29 @@ import {
   useEffect
 } from "react";
 
-import { 
-  useCurrentUser,
-  useUsers
-} from ".";
 import {
   isError,
   isLoading
 } from "../../utils/useFetch";
 
+import useUser from "./useUser";
+import useUsers from "./useUsers";
+
 const UserPicker = () => {
-  const [ currentUser, setCurrentUser ] = useCurrentUser();
+  const [ user, setUser ] = useUser();
   const { users, error, status } = useUsers();
 
   const changeUser = (event) => {
     const selectedUserId = parseInt(event.target.value, 10);
     const selectedUser = users.find(u => u.id === selectedUserId);
-    setCurrentUser(selectedUser);
+    setUser(selectedUser);
   };
 
   useEffect(
     () => {
-      setCurrentUser(users[0]);
+      setUser(users[0]);
     }, 
-    [ users, setCurrentUser ]
+    [ users, setUser ]
   );
 
   if (isError(status)) {
@@ -49,7 +48,7 @@ const UserPicker = () => {
 
   return (
     <FormControl>
-      <Select value={ currentUser?.id } onChange={ changeUser }>
+      <Select value={ user?.id || "" } onChange={ changeUser }>
         { users.map((u) => (<MenuItem key={ u.id } value={ u.id }>{ u.name }</MenuItem>)) }
       </Select>
     </FormControl>

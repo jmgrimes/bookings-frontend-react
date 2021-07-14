@@ -1,18 +1,14 @@
-import UserDetails from "./UserDetails";
 import UserPicker from "./UserPicker";
 import UsersList from "./UsersList";
 import UsersPage from "./UsersPage";
-import useCurrentUser, { CurrentUserProvider } from "./useCurrentUser";
-import useUser from "./useUser";
+import useUser, { UserProvider } from "./useUser";
 import useUsers from "./useUsers";
 
 export {
-  CurrentUserProvider,
-  UserDetails,
+  UserProvider,
   UserPicker,
   UsersList,
   UsersPage,
-  useCurrentUser,
   useUser,
   useUsers
 };
