@@ -22,24 +22,6 @@ import useBookings from "./useBookings";
 import useBookingsParams from "./useBookingsParams";
 import useGrid from "./useGrid";
 
-const transformBookings = (bookingsArray) => {
-    return (
-        bookingsArray ?
-        bookingsArray.reduce(
-            (bookings, booking) => {
-                const {session, date} = booking;
-                if (!bookings[session]) {
-                    bookings[session] = {};
-                }
-                bookings[session][date] = booking;
-                return bookings;
-            },
-            {}
-        ) :
-        {}
-    );
-}
-
 const useStyles = makeStyles((theme) => ({
     header: {
         color: theme.palette.primary.contrastText,
@@ -61,15 +43,33 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
     const classes = useStyles();
 
     const {date} = useBookingsParams();
-    const week = getWeek(date);
-    const weekStart = shortISO(week.start);
-
-    const {bookings, error, isError, isLoading, isSuccess} = useBookings(
-        bookable?.id, week.start, week.end, transformBookings
-    );
+    const week = getWeek(date);    
 
     const {grid, sessions, dates} = useGrid(bookable, week.start);
+    const {bookings, error, isError, isLoading, isSuccess} = useBookings(
+        bookable?.id, 
+        week.start, 
+        week.end, 
+        (bookingsArray) => {
+            return (
+                bookingsArray ?
+                bookingsArray.reduce(
+                    (bookings, booking) => {
+                        const {session, date} = booking;
+                        if (!bookings[session]) {
+                            bookings[session] = {};
+                        }
+                        bookings[session][date] = booking;
+                        return bookings;
+                    },
+                    {}
+                ) :
+                {}
+            );
+        }
+    );
 
+    const weekStart = shortISO(week.start);
     useEffect(
         () => {
             setBooking(null);
