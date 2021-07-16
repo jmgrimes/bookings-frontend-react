@@ -22,7 +22,7 @@ import BookableDetails from "./BookableDetails";
 import BookablesList from "./BookablesList";
 import useBookables from "./useBookables";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     spacer: {
         marginBottom: 10
     }
@@ -30,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
 
 const BookablesView = () => {
     const classes = useStyles();
-
     const {id} = useParams();
     const {bookables, error, status} = useBookables();
     const bookable = bookables.find((b) => b.id === parseInt(id, 10)) || bookables[0];
+    const getUrl = (id) => (`/bookables/${id}`);
 
     if (isError(status)) {
         return (
@@ -58,10 +58,7 @@ const BookablesView = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={3}>
-                <BookablesList
-                    bookable={bookable}
-                    bookables={bookables}
-                    getUrl={(id) => (`/bookables/${id}`)}/>
+                <BookablesList bookable={bookable} bookables={bookables} getUrl={getUrl}/>
                 <Typography variant="body1" component="div" className={classes.spacer}/>
                 <Button fullWidth variant="outlined" color="primary" startIcon={<Add/>}
                         component={Link} to="/bookables/new">

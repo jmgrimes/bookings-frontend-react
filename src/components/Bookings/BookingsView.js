@@ -25,11 +25,10 @@ import WeekPicker from "./WeekPicker";
 import useBookingsParams from "./useBookingsParams";
 
 const BookingsView = () => {
+    const [booking, setBooking] = useState();
     const {date, bookableId} = useBookingsParams();
     const {bookables, error, status} = useBookables();
     const bookable = bookables.find((b) => (b.id === bookableId)) || bookables[0];
-
-    const [booking, setBooking] = useState();
 
     const getUrl = (id) => {
         const root = `/bookings?bookableId=${id}`;

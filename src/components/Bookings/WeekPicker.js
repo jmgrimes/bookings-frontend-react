@@ -13,7 +13,6 @@ import {
     EventAvailable
 } from "@material-ui/icons";
 import {
-    Fragment,
     useState
 } from "react";
 
@@ -44,20 +43,18 @@ const WeekPicker = () => {
     };
 
     return (
-        <Fragment>
-            <Toolbar>
-                <Button startIcon={<ArrowLeft/>} onClick={() => setBookingsDate(dates.previous)}>Previous</Button>
-                <Typography className={classes.flexSpacer} component="div"/>
-                <TextField type="date" value={dateText} onChange={(event) => setDateText(event.target.value)}/>
-                <Typography className={classes.spacer} component="div"/>
-                <ButtonGroup variant="text">
-                    <Button startIcon={<EventAvailable/>} onClick={() => setBookingsDate(dateText)}>Go</Button>
-                    <Button startIcon={<CalendarToday/>} onClick={() => setBookingsDate(dates.today)}>Today</Button>
-                </ButtonGroup>
-                <Typography className={classes.flexSpacer} component="div"/>
-                <Button endIcon={<ArrowRight/>} onClick={() => setBookingsDate(dates.next)}>Next</Button>
-            </Toolbar>
-        </Fragment>
+        <Toolbar>
+            <Button startIcon={<ArrowLeft/>} onClick={() => setBookingsDate(dates.previous)}>Previous</Button>
+            <Typography className={classes.flexSpacer} component="div"/>
+            <TextField type="date" value={dateText} onChange={(event) => setDateText(event.target.value)}/>
+            <Typography className={classes.spacer} component="div"/>
+            <ButtonGroup variant="text">
+                <Button startIcon={<EventAvailable/>} onClick={() => setBookingsDate(dateText)}>Go</Button>
+                <Button startIcon={<CalendarToday/>} onClick={() => setBookingsDate(dates.today)}>Today</Button>
+            </ButtonGroup>
+            <Typography className={classes.flexSpacer} component="div"/>
+            <Button endIcon={<ArrowRight/>} onClick={() => setBookingsDate(dates.next)}>Next</Button>
+        </Toolbar>
     );
 };
 

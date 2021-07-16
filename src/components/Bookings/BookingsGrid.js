@@ -30,18 +30,18 @@ import useGrid from "./useGrid";
 const transformBookings = (bookingsArray) => {
     return (
         bookingsArray ?
-            bookingsArray.reduce(
-                (bookings, booking) => {
-                    const {session, date} = booking;
-                    if (!bookings[session]) {
-                        bookings[session] = {};
-                    }
-                    bookings[session][date] = booking;
-                    return bookings;
-                },
-                {}
-            ) :
+        bookingsArray.reduce(
+            (bookings, booking) => {
+                const {session, date} = booking;
+                if (!bookings[session]) {
+                    bookings[session] = {};
+                }
+                bookings[session][date] = booking;
+                return bookings;
+            },
             {}
+        ) :
+        {}
     );
 }
 

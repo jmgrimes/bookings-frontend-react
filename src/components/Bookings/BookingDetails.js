@@ -24,23 +24,23 @@ const BookingDetails = ({bookable, booking}) => {
         <Card>
             <CardHeader title="Booking Details" action={
                 booking?.bookerId ?
-                    (
-                        isBookingUser &&
-                        <IconButton>
-                            <Edit/>
-                        </IconButton>
-                    ) :
-                    (
-                        <IconButton>
-                            <Add/>
-                        </IconButton>
-                    )
+                (
+                    isBookingUser &&
+                    <IconButton>
+                        <Edit/>
+                    </IconButton>
+                ) :
+                (
+                    <IconButton>
+                        <Add/>
+                    </IconButton>
+                )
             }/>
             <CardContent>
                 {
                     booking ?
-                        <Booking bookable={bookable} booking={booking}/> :
-                        <Typography variant="body1" component="p">Select a booking or a booking slot.</Typography>
+                    <Booking bookable={bookable} booking={booking}/> :
+                    <Typography variant="body1" component="p">Select a booking or a booking slot.</Typography>
                 }
             </CardContent>
         </Card>

@@ -23,6 +23,7 @@ const UsersView = () => {
     const [currentUser] = useUser();
 
     const user = id ? users.find((u) => (u.id === parseInt(id, 10))) || users[0] : currentUser;
+    const getUrl = (id) => (`/users/${id}`);
 
     if (isError(status)) {
         return (
@@ -47,7 +48,7 @@ const UsersView = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={3}>
-                <UsersList users={users} user={user} getUrl={(id) => (`/users/${id}`)}/>
+                <UsersList users={users} user={user} getUrl={getUrl}/>
             </Grid>
             <Grid item xs={9}>
                 <UserDetails user={user}/>
