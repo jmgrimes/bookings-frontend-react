@@ -6,12 +6,15 @@ import {
     getData
 } from "../../utils/apis";
 
-const useBookables = () => {
-    const {data: bookables = [], error, status} = useQuery(
+const useBookables = (transform = ((bookables) => (bookables))) => {
+    const result = useQuery(
         "bookables",
         () => getData("http://localhost:3001/bookables")
     );
-    return {bookables, error, status};
+    return {
+        ...result,
+        bookables: transform(result.data || [])
+    };
 }
 
 export default useBookables;

@@ -12,10 +12,6 @@ import {
     useBookables
 } from "../Bookables";
 import {
-    isError,
-    isLoading
-} from "../../utils/apis";
-import {
     shortISO
 } from "../../utils/dates";
 
@@ -26,7 +22,7 @@ import useBookingsParams from "./useBookingsParams";
 
 const BookingsView = () => {
     const {date, bookableId} = useBookingsParams();
-    const {bookables, error, status} = useBookables();
+    const {bookables, error, isError, isLoading} = useBookables();
     const bookable = bookables.find((b) => (b.id === bookableId)) || bookables[0];
 
     const [booking, setBooking] = useState();
@@ -36,7 +32,7 @@ const BookingsView = () => {
         return date ? `${root}&date=${shortISO(date)}` : root;
     }
 
-    if (isError(status)) {
+    if (isError) {
         return (
             <Grid container alignContent="center" justifyContent="center" spacing={3}>
                 <Grid item xs={12}>
@@ -46,7 +42,7 @@ const BookingsView = () => {
         );
     }
 
-    if (isLoading(status)) {
+    if (isLoading) {
         return (
             <Grid container alignContent="center" justifyContent="center" spacing={3}>
                 <Grid item xs={12}>

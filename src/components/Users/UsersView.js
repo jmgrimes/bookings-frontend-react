@@ -7,11 +7,6 @@ import {
     useParams
 } from "react-router-dom";
 
-import {
-    isError,
-    isLoading
-} from "../../utils/apis";
-
 import UserDetails from "./UserDetails";
 import UsersList from "./UsersList";
 import useUser from "./useUser";
@@ -19,12 +14,12 @@ import useUsers from "./useUsers";
 
 const UsersView = () => {
     const {id} = useParams();
-    const {users, error, status} = useUsers();
+    const {users, error, isError, isLoading} = useUsers();
     const [currentUser] = useUser();
 
     const user = id ? users.find((u) => (u.id === parseInt(id, 10))) || users[0] : currentUser;
 
-    if (isError(status)) {
+    if (isError) {
         return (
             <Grid container alignContent="center" justifyContent="center" spacing={3}>
                 <Grid item xs={12}>
@@ -34,7 +29,7 @@ const UsersView = () => {
         );
     }
 
-    if (isLoading(status)) {
+    if (isLoading) {
         return (
             <Grid container alignContent="center" justifyContent="center" spacing={3}>
                 <Grid item xs={12}>
