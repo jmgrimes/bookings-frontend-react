@@ -9,17 +9,12 @@ import {
     useEffect
 } from "react";
 
-import {
-    isError,
-    isLoading
-} from "../../utils/apis";
-
 import useUser from "./useUser";
 import useUsers from "./useUsers";
 
 const UserPicker = () => {
     const [user, setUser] = useUser();
-    const {users, error, status} = useUsers();
+    const {users, error, isError, isLoading} = useUsers();
 
     const changeUser = (event) => {
         const selectedUserId = parseInt(event.target.value, 10);
@@ -34,13 +29,13 @@ const UserPicker = () => {
         [users, setUser]
     );
 
-    if (isError(status)) {
+    if (isError) {
         return (
             <Typography variant="body1" component="p">{error.message}</Typography>
         );
     }
 
-    if (isLoading(status)) {
+    if (isLoading) {
         return (
             <CircularProgress/>
         );

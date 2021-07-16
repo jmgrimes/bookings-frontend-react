@@ -14,11 +14,6 @@ import {
 } from "react";
 
 import {
-    isError,
-    isLoading,
-    isSuccessful
-} from "../../utils/apis";
-import {
     getWeek,
     shortISO
 } from "../../utils/dates";
@@ -69,8 +64,9 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
     const week = getWeek(date);
     const weekStart = shortISO(week.start);
 
-    const {bookings: bookingsArray, error, status} = useBookings(bookable?.id, week.start, week.end);
-    const bookings = transformBookings(bookingsArray);
+    const {bookings, error, isError, isLoading, isSuccess} = useBookings(
+        bookable?.id, week.start, week.end, transformBookings
+    );
 
     const {grid, sessions, dates} = useGrid(bookable, week.start);
 
@@ -87,7 +83,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
         return (
             <TableCell variant="body" align="center"
                        className={isSelected ? classes.bookingSelected : classes.booking}
-                       onClick={isSuccessful(status) ? () => setBooking(cellData) : null}
+                       onClick={isSuccess ? () => setBooking(cellData) : null}
                        key={`${session}-${date}-cell`}>
                 {cellData.title}
             </TableCell>
@@ -101,7 +97,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
     return (
         <Fragment>
             {
-                isError(status) &&
+                isError &&
                 <Typography variant="body1" component="p">${error.message}</Typography>
             }
             <Table>
@@ -109,7 +105,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
                     <TableRow key="header">
                         <TableCell align="center" className={classes.header} key="progress">
                             {
-                                isLoading(status) &&
+                                isLoading &&
                                 <CircularProgress/>
                             }
                         </TableCell>

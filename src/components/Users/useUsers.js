@@ -6,12 +6,15 @@ import {
     getData
 } from "../../utils/apis";
 
-const useUsers = () => {
-    const {data: users = [], error, status} = useQuery(
+const useUsers = (transform = ((users) => (users))) => {
+    const result = useQuery(
         "users",
         () => getData("http://localhost:3001/users")
     );
-    return {users, error, status};
+    return {
+        ...result,
+        users: transform(result.data || [])
+    };
 }
 
 export default useUsers;

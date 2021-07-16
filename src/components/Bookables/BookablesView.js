@@ -13,11 +13,6 @@ import {
     useParams
 } from "react-router-dom";
 
-import {
-    isError,
-    isLoading
-} from "../../utils/apis";
-
 import BookableDetails from "./BookableDetails";
 import BookablesList from "./BookablesList";
 import useBookables from "./useBookables";
@@ -31,11 +26,11 @@ const useStyles = makeStyles(() => ({
 const BookablesView = () => {
     const classes = useStyles();
     const {id} = useParams();
-    const {bookables, error, status} = useBookables();
+    const {bookables, error, isLoading, isError} = useBookables();
     const bookable = bookables.find((b) => b.id === parseInt(id, 10)) || bookables[0];
     const getUrl = (id) => (`/bookables/${id}`);
 
-    if (isError(status)) {
+    if (isError) {
         return (
             <Grid container alignContent="center" justifyContent="center" spacing={3}>
                 <Grid item xs={12}>
@@ -45,7 +40,7 @@ const BookablesView = () => {
         );
     }
 
-    if (isLoading(status)) {
+    if (isLoading) {
         return (
             <Grid container alignContent="center" justifyContent="center" spacing={3}>
                 <Grid item xs={12}>
