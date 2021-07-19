@@ -3,6 +3,7 @@ import {
 } from "react-router-dom";
 
 import {
+    getWeek,
     isDate
 } from "../../utils/dates";
 
@@ -11,6 +12,7 @@ const useBookingsParams = () => {
 
     const dateParam = searchParams.get("date");
     const date = isDate(dateParam) ? new Date(dateParam) : new Date();
+    const week = getWeek(date);
 
     const bookableIdParam = parseInt(searchParams.get("bookableId"), 10);
     const bookableId = !isNaN(bookableIdParam) ? bookableIdParam : undefined;
@@ -30,6 +32,7 @@ const useBookingsParams = () => {
 
     return {
         date,
+        week,
         bookableId,
         setBookingsDate
     };

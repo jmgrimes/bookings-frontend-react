@@ -7,6 +7,4 @@ const getData = (url) => fetch(url).then((response) => {
     return response.json();
 });
 
-export {
-    getData
-};
+export default getData;

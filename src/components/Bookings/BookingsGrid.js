@@ -13,11 +13,7 @@ import {
     useEffect
 } from "react";
 
-import {
-    getWeek,
-    shortISO
-} from "../../utils/dates";
-
+import { shortISO } from "./dates";
 import useBookings from "./useBookings";
 import useBookingsParams from "./useBookingsParams";
 import useGrid from "./useGrid";
@@ -41,10 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const BookingsGrid = ({bookable, booking, setBooking}) => {
     const classes = useStyles();
-
-    const {date} = useBookingsParams();
-    const week = getWeek(date);    
-
+    const {week} = useBookingsParams();
     const {grid, sessions, dates} = useGrid(bookable, week.start);
     const {bookings, error, isError, isLoading, isSuccess} = useBookings(
         bookable?.id, 

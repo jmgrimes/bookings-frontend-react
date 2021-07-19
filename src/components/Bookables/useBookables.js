@@ -2,9 +2,7 @@ import {
     useQuery
 } from "react-query";
 
-import {
-    getData
-} from "../../utils/apis";
+import getData from "../../utils/apis";
 
 const useBookables = (transform = ((bookables) => (bookables))) => {
     const result = useQuery(
