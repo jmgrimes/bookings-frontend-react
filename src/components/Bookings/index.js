@@ -1,2 +1,7 @@
-export * from "./BookingsPage";
-export * from "./useBookings";
+import BookingsPage from "./BookingsPage";
+import useBookings from "./useBookings";
+
+export {
+    BookingsPage,
+    useBookings
+}

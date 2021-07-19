@@ -2,14 +2,19 @@ import {
     useQuery
 } from "react-query";
 
-import {
-    getData
-} from "../../utils/apis";
-
+const url = "http://localhost:3001/users";
 const useUsers = (transform = ((users) => (users))) => {
     const result = useQuery(
         "users",
-        () => getData("http://localhost:3001/users")
+        () => fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `There was a problem fetching users data from the users resource endpoint (${url}).`
+                    );
+                }
+                return response.json();
+            })
     );
     return {
         ...result,

@@ -13,7 +13,6 @@ import {
     useEffect
 } from "react";
 
-import { shortISO } from "./dates";
 import useBookings from "./useBookings";
 import useBookingsParams from "./useBookingsParams";
 import useGrid from "./useGrid";
@@ -62,7 +61,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
         }
     );
 
-    const weekStart = shortISO(week.start);
+    const weekStart = week.start.toISODate();
     useEffect(
         () => {
             setBooking(null);

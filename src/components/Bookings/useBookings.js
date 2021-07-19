@@ -2,20 +2,22 @@ import {
     useQuery
 } from "react-query";
 
-import {
-    getData
-} from "../../utils/apis";
-import {
-    shortISO
-} from "../../utils/dates";
-
+const baseUrl = "http://localhost:3001/bookings";
 const useBookings = (bookableId, startDate, endDate, transform = (bookings) => (bookings)) => {
-    const start = shortISO(startDate);
-    const end = shortISO(endDate);
-    const url = `http://localhost:3001/bookings?bookableId=${bookableId}&date_gte=${start}&date_lte=${end}`;
+    const start = startDate.toISODate();
+    const end = endDate.toISODate();
+    const url = `${baseUrl}?bookableId=${bookableId}&date_gte=${start}&date_lte=${end}`;
     const result = useQuery(
         [ "bookings", bookableId, start, end ],
-        () => getData(url)
+        () => fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `There was a problem fetching bookings data from the bookings resource endpoint (${url}).`
+                    );
+                }
+                return response.json();
+            })
     );
     return {
         ...result,

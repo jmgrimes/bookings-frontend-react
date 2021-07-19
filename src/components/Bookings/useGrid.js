@@ -5,13 +5,9 @@ import {
 import {
     sessions as sessionNames
 } from "../../static.json";
-import {
-    addDays,
-    shortISO
-} from "../../utils/dates";
 
 const getGrid = (bookable, startDate) => {
-    const dates = bookable.days.sort().map((day) => shortISO(addDays(startDate, day)));
+    const dates = bookable.days.sort().map((day) => (startDate.plus({ days: day }).toISODate()));
     const sessions = bookable.sessions.map((session) => sessionNames[session]);
     const grid = {};
     sessions.forEach((session) => {

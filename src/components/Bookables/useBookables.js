@@ -2,12 +2,19 @@ import {
     useQuery
 } from "react-query";
 
-import getData from "../../utils/apis";
-
+const url = "http://localhost:3001/bookables";
 const useBookables = (transform = ((bookables) => (bookables))) => {
     const result = useQuery(
         "bookables",
-        () => getData("http://localhost:3001/bookables")
+        () => fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `There was a problem fetching bookables data from the bookables resource endpoint (${url}).`
+                    );
+                }
+                return response.json();
+            })
     );
     return {
         ...result,

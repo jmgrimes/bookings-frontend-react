@@ -11,9 +11,6 @@ import {
     BookablesList,
     useBookables
 } from "../Bookables";
-import {
-    shortISO
-} from "../../utils/dates";
 
 import BookingDetails from "./BookingDetails";
 import BookingsGrid from "./BookingsGrid";
@@ -28,7 +25,7 @@ const BookingsView = () => {
 
     const getUrl = (id) => {
         const root = `/bookings?bookableId=${id}`;
-        return date ? `${root}&date=${shortISO(date)}` : root;
+        return date ? `${root}&date=${date.toISODate()}` : root;
     }
 
     if (isError) {

@@ -1,18 +1,20 @@
 import {
+    DateTime
+} from "luxon";
+import {
     useSearchParams
 } from "react-router-dom";
-
-import {
-    getWeek,
-    isDate
-} from "../../utils/dates";
 
 const useBookingsParams = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const dateParam = searchParams.get("date");
-    const date = isDate(dateParam) ? new Date(dateParam) : new Date();
-    const week = getWeek(date);
+    const dateParam = DateTime.fromISO(searchParams.get("date"));
+    const date = dateParam.isValid ? dateParam : DateTime.now();
+    const week = {
+        date,
+        start: date.startOf("week"),
+        end: date.endOf("week")
+    };
 
     const bookableIdParam = parseInt(searchParams.get("bookableId"), 10);
     const bookableId = !isNaN(bookableIdParam) ? bookableIdParam : undefined;
@@ -22,8 +24,8 @@ const useBookingsParams = () => {
         if (bookableId) {
             params.bookableId = bookableId;
         }
-        if (isDate(date)) {
-            params.date = date;
+        if (DateTime.isDateTime(date)) {
+            params.date = date.toISODate();
         }
         if (params.date || params.bookableId !== undefined) {
             setSearchParams(params, {replace: true});
