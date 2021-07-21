@@ -13,7 +13,10 @@ import {
     useEffect
 } from "react";
 
-import useBookings from "./useBookings";
+import { 
+    useBookings 
+} from "../../apis/Bookings";
+
 import useBookingsParams from "./useBookingsParams";
 import useGrid from "./useGrid";
 

@@ -21,10 +21,10 @@ const BookablesPage = () => {
                     <BookablesView/>
                 </Route>
                 <Route path="/:id/edit">
-                    <BookableEdit/>
+                    <BookableEdit />
                 </Route>
                 <Route path="/new">
-                    <BookableNew/>
+                    <BookableNew />
                 </Route>
             </Routes>
         </Container>

@@ -21,7 +21,7 @@ import {
 
 import useBookingsParams from "./useBookingsParams";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     flexSpacer: {
         flexGrow: 1
     },
@@ -43,14 +43,14 @@ const WeekPicker = () => {
     return (
         <Toolbar>
             <Button startIcon={<ArrowLeft/>} onClick={() => setBookingsDate(dates.previous)}>Previous</Button>
-            <Typography className={classes.flexSpacer} component="div"/>
+            <Typography variant="body1" component="div" className={classes.flexSpacer}/>
             <TextField type="date" value={dateText} onChange={(event) => setDateText(event.target.value)}/>
-            <Typography className={classes.spacer} component="div"/>
+            <Typography variant="body1" component="div" className={classes.flexSpacer}/>
             <ButtonGroup variant="text">
                 <Button startIcon={<EventAvailable/>} onClick={() => setBookingsDate(DateTime.fromISO(dateText))}>Go</Button>
                 <Button startIcon={<CalendarToday/>} onClick={() => setBookingsDate(dates.today)}>Today</Button>
             </ButtonGroup>
-            <Typography className={classes.flexSpacer} component="div"/>
+            <Typography variant="body1" component="div" className={classes.flexSpacer}/>
             <Button endIcon={<ArrowRight/>} onClick={() => setBookingsDate(dates.next)}>Next</Button>
         </Toolbar>
     );

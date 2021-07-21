@@ -13,9 +13,12 @@ import {
     useParams
 } from "react-router-dom";
 
+import {
+    useBookables 
+} from "../../apis/Bookables";
+
 import BookableDetails from "./BookableDetails";
 import BookablesList from "./BookablesList";
-import useBookables from "./useBookables";
 
 const useStyles = makeStyles(() => ({
     spacer: {

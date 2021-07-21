@@ -7,10 +7,13 @@ import {
     useParams
 } from "react-router-dom";
 
+import {
+    useUsers 
+} from "../../apis/Users";
+
 import UserDetails from "./UserDetails";
 import UsersList from "./UsersList";
 import useUser from "./useUser";
-import useUsers from "./useUsers";
 
 const UsersView = () => {
     const {id} = useParams();

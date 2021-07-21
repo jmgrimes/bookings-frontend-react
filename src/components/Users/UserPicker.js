@@ -9,8 +9,11 @@ import {
     useEffect
 } from "react";
 
+import {
+    useUsers 
+} from "../../apis/Users";
+
 import useUser from "./useUser";
-import useUsers from "./useUsers";
 
 const UserPicker = () => {
     const [user, setUser] = useUser();

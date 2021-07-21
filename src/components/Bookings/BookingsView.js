@@ -8,9 +8,11 @@ import {
 } from "react";
 
 import {
-    BookablesList,
-    useBookables
+    BookablesList
 } from "../Bookables";
+import { 
+    useBookables
+} from "../../apis/Bookables";
 
 import BookingDetails from "./BookingDetails";
 import BookingsGrid from "./BookingsGrid";
