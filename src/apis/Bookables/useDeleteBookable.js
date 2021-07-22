@@ -22,7 +22,7 @@ const useUpdateBookable = (onSuccess = () => {}) => {
                 });
         },
         {
-            onSuccess: (response, bookable) => {
+            onSuccess: (_, bookable) => {
                 const bookables = queryClient.getQueryData("bookables") || [];
                 queryClient.setQueryData("bookables", bookables.filter((b) => (b.id !== bookable.id)));
                 onSuccess(bookable);

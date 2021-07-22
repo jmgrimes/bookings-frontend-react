@@ -15,7 +15,6 @@ import {
 } from "../../apis/Bookables";
 
 import BookableForm from "./BookableForm";
-import useFormState from "./useFormState";
 
 const BookableEdit = () => {
     const navigate = useNavigate();
@@ -42,8 +41,6 @@ const BookableEdit = () => {
         isLoading: isDeleteLoading
     } = useDeleteBookable(() => navigate("/bookables"));
 
-    const formState = useFormState(bookable);
-
     const isError = isQueryError || isUpdateError || isDeleteError;
     const isLoading = isQueryLoading || isUpdateLoading || isDeleteLoading;
     const error = queryError || updateError || deleteError;
@@ -69,10 +66,11 @@ const BookableEdit = () => {
     }
 
     return (
-        <BookableForm formState={formState} 
-            handleSubmit={() => updateBookable(formState.state)}
-            handleDelete={() => deleteBookable(formState.state)}
-            handleCancel={() => navigate(`/bookables/${id}`)}
+        <BookableForm 
+            bookable={bookable}
+            onSave={updateBookable}
+            onDelete={deleteBookable}
+            onCancel={() => navigate(`/bookables/${id}`)}
         />
     );
 }

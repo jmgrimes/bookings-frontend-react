@@ -12,16 +12,14 @@ import {
 } from "../../apis/Bookables";
 
 import BookableForm from "./BookableForm";
-import useFormState from "./useFormState";
 
 const BookableNew = () => {
     const navigate = useNavigate();
-
     const {createBookable, error, isLoading, isError} = useCreateBookable((newBookable) => {
         navigate(`/bookables/${newBookable.id}`);
     });
 
-    const formState = useFormState();
+    const bookable = {};
 
     if (isError) {
         return (
@@ -44,9 +42,10 @@ const BookableNew = () => {
     }
 
     return (
-        <BookableForm formState={formState} 
-            handleSubmit={() => createBookable(formState.state)}
-            handleCancel={() => navigate(`/bookables`)}
+        <BookableForm 
+            bookable={bookable}
+            onSave={createBookable}
+            onCancel={() => navigate(`/bookables`)}
         />
     );
 }
