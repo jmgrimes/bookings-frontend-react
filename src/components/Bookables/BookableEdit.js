@@ -1,13 +1,12 @@
-import { 
-    CircularProgress, 
-    Grid,
-    Typography
-} from "@material-ui/core";
-import { 
+import {
     useNavigate, 
     useParams 
 } from "react-router-dom";
 
+import {
+    Error,
+    Loading
+} from "../Commons";
 import {
     useBookable, 
     useDeleteBookable,
@@ -17,8 +16,8 @@ import {
 import BookableForm from "./BookableForm";
 
 const BookableEdit = () => {
-    const navigate = useNavigate();
     const {id} = useParams();
+    const navigate = useNavigate();
     
     const {
         bookable, 
@@ -32,7 +31,7 @@ const BookableEdit = () => {
         error: updateError, 
         isError: isUpdateError, 
         isLoading: isUpdateLoading
-    } = useUpdateBookable((bookable) => navigate(`/bookables/${bookable.id}`));
+    } = useUpdateBookable(bookable => navigate(`/bookables/${bookable.id}`));
 
     const {
         deleteBookable,
@@ -45,25 +44,13 @@ const BookableEdit = () => {
     const isLoading = isQueryLoading || isUpdateLoading || isDeleteLoading;
     const error = queryError || updateError || deleteError;
 
-    if (isError) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="body1" component="p">{error.message}</Typography>
-                </Grid>
-            </Grid>
-        );
-    }
+    if (isLoading) return (
+        <Loading/>
+    );
 
-    if (isLoading) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <CircularProgress/>
-                </Grid>
-            </Grid>
-        );
-    }
+    if (isError) return (
+        <Error error={error}/>
+    );
 
     return (
         <BookableForm 

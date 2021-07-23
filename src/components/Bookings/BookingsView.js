@@ -1,7 +1,5 @@
 import {
-    CircularProgress,
-    Grid,
-    Typography
+    Grid
 } from "@material-ui/core";
 import {
     useState
@@ -10,6 +8,10 @@ import {
 import {
     BookablesList
 } from "../Bookables";
+import {
+    Error,
+    Loading
+} from "../Commons";
 import { 
     useBookables
 } from "../../apis/Bookables";
@@ -23,32 +25,15 @@ const BookingsView = () => {
     const [booking, setBooking] = useState();
     const {date, bookableId} = useBookingsParams();
     const {bookables, error, isError, isLoading} = useBookables();
-    const bookable = bookables.find((b) => (b.id === bookableId)) || bookables[0];
+    const bookable = bookables.find(b => b.id === bookableId) || bookables[0];
 
-    const getUrl = (id) => {
+    const getUrl = id => {
         const root = `/bookings?bookableId=${id}`;
         return date ? `${root}&date=${date.toISODate()}` : root;
-    }
+    };
 
-    if (isError) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="body1" component="p">{error.message}</Typography>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <CircularProgress/>
-                </Grid>
-            </Grid>
-        );
-    }
+    if (isLoading) return <Loading/>;
+    if (isError) return <Error error={error}/>;
 
     return (
         <Grid container spacing={3}>

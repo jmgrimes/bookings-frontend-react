@@ -4,13 +4,13 @@ import {
 } from "react-query";
 
 const baseUrl = "http://localhost:3001/bookables"
-const useBookable = (bookableId, transform =(bookable) => (bookable)) => {
+const useBookable = (bookableId, transform = bookable => bookable) => {
     const url = `${baseUrl}/${bookableId}`;
     const queryClient = useQueryClient();
     const result = useQuery(
-        [ "bookable", bookableId ],
+        ["bookables", bookableId],
         () => fetch(url)
-            .then((response) => {
+            .then(response => {
                 if (!response.ok) {
                     throw new Error(
                         `There was a problem fetching bookables data from the bookables resource endpoint (${url}).`

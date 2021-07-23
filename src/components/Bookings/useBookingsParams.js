@@ -19,7 +19,7 @@ const useBookingsParams = () => {
     const bookableIdParam = parseInt(searchParams.get("bookableId"), 10);
     const bookableId = !isNaN(bookableIdParam) ? bookableIdParam : undefined;
 
-    const setBookingsDate = (date) => {
+    const setBookingsDate = date => {
         const params = {};
         if (bookableId) {
             params.bookableId = bookableId;

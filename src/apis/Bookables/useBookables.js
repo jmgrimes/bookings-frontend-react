@@ -3,7 +3,7 @@ import {
 } from "react-query";
 
 const url = "http://localhost:3001/bookables";
-const useBookables = (transform = ((bookables) => (bookables))) => {
+const useBookables = (transform = bookables => bookables) => {
     const result = useQuery(
         "bookables",
         () => fetch(url)

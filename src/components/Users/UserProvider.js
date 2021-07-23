@@ -27,7 +27,7 @@ const useUser = () => {
     return [user, setUser];
 }
 
-export default useUser;
+export default UserProvider;
 export {
-    UserProvider
+    useUser
 };

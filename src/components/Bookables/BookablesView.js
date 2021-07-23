@@ -1,6 +1,5 @@
 import {
     Button,
-    CircularProgress,
     Grid,
     Typography,
     makeStyles
@@ -14,11 +13,16 @@ import {
 } from "react-router-dom";
 
 import {
+    Error,
+    Loading
+} from "../Commons";
+import {
     useBookables 
 } from "../../apis/Bookables";
 
 import BookableDetails from "./BookableDetails";
 import BookablesList from "./BookablesList";
+
 
 const useStyles = makeStyles(() => ({
     spacer: {
@@ -30,28 +34,11 @@ const BookablesView = () => {
     const classes = useStyles();
     const {id} = useParams();
     const {bookables, error, isLoading, isError} = useBookables();
-    const bookable = bookables.find((b) => b.id === parseInt(id, 10)) || bookables[0];
-    const getUrl = (id) => (`/bookables/${id}`);
+    const bookable = bookables.find(b => b.id === parseInt(id, 10)) || bookables[0];
+    const getUrl = id => (`/bookables/${id}`);
 
-    if (isError) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="body1" component="p">{error.message}</Typography>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <CircularProgress/>
-                </Grid>
-            </Grid>
-        );
-    }
+    if (isLoading) return <Loading/>;
+    if (isError) return <Error error={error}/>;
 
     return (
         <Grid container spacing={3}>

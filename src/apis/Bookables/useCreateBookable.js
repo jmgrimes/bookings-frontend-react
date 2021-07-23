@@ -7,14 +7,14 @@ const url = "http://localhost:3001/bookables";
 const useCreateBookable = (onSuccess = () => {}) => {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        (data) => {
+        data => {
             const fetchOptions = {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(data)
             };
             return fetch(url, fetchOptions)
-                .then((response) => {
+                .then(response => {
                 if (!response.ok) {
                     throw new Error("There was a problem creating the bookable!");
                 }
@@ -22,7 +22,7 @@ const useCreateBookable = (onSuccess = () => {}) => {
             });
         },
         {
-            onSuccess: (newBookable) => {
+            onSuccess: newBookable => {
                 queryClient.setQueryData(
                     "bookables",
                     (old) => [ ...(old || []), newBookable]

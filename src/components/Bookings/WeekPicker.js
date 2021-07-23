@@ -3,7 +3,6 @@ import {
     ButtonGroup,
     TextField,
     Toolbar,
-    Typography,
     makeStyles
 } from "@material-ui/core";
 import {
@@ -43,14 +42,14 @@ const WeekPicker = () => {
     return (
         <Toolbar>
             <Button startIcon={<ArrowLeft/>} onClick={() => setBookingsDate(dates.previous)}>Previous</Button>
-            <Typography variant="body1" component="div" className={classes.flexSpacer}/>
+            <div className={classes.flexSpacer}/>
             <TextField type="date" value={dateText} onChange={(event) => setDateText(event.target.value)}/>
-            <Typography variant="body1" component="div" className={classes.flexSpacer}/>
+            <div className={classes.flexSpacer}/>
             <ButtonGroup variant="text">
                 <Button startIcon={<EventAvailable/>} onClick={() => setBookingsDate(DateTime.fromISO(dateText))}>Go</Button>
                 <Button startIcon={<CalendarToday/>} onClick={() => setBookingsDate(dates.today)}>Today</Button>
             </ButtonGroup>
-            <Typography variant="body1" component="div" className={classes.flexSpacer}/>
+            <div className={classes.flexSpacer}/>
             <Button endIcon={<ArrowRight/>} onClick={() => setBookingsDate(dates.next)}>Next</Button>
         </Toolbar>
     );

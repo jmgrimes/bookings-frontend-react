@@ -13,13 +13,13 @@ import {
     useUsers 
 } from "../../apis/Users";
 
-import useUser from "./useUser";
+import { useUser } from "./UserProvider";
 
 const UserPicker = () => {
     const [user, setUser] = useUser();
     const {users, error, isError, isLoading} = useUsers();
 
-    const changeUser = (event) => {
+    const changeUser = event => {
         const selectedUserId = parseInt(event.target.value, 10);
         const selectedUser = users.find(u => u.id === selectedUserId);
         setUser(selectedUser);
@@ -47,7 +47,9 @@ const UserPicker = () => {
     return (
         <FormControl>
             <Select value={user?.id || ""} onChange={changeUser}>
-                {users.map((u) => (<MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>))}
+                {
+                    users.map(u => <MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>)
+                }
             </Select>
         </FormControl>
     );

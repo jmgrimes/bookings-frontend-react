@@ -7,7 +7,7 @@ const baseUrl = "http://localhost:3001/bookables";
 const useUpdateBookable = (onSuccess = () => {}) => {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        (data) => {
+        data => {
             const url = `${baseUrl}/${data.id}`
             const fetchOptions = {
                 method: "PUT",
@@ -15,7 +15,7 @@ const useUpdateBookable = (onSuccess = () => {}) => {
                 body: JSON.stringify(data)
             };
             return fetch(url, fetchOptions)
-                .then((response) => {
+                .then(response => {
                     if (!response.ok) {
                         throw new Error("There was a problem updating the bookable!");
                     }
@@ -23,14 +23,14 @@ const useUpdateBookable = (onSuccess = () => {}) => {
                 });
         },
         {
-            onSuccess: (bookable) => {
+            onSuccess: bookable => {
                 const bookables = queryClient.getQueryData("bookables") || [];
-                const bookableIndex = bookables.findIndex((b) => (b.id === bookable.id));
+                const bookableIndex = bookables.findIndex(b => b.id === bookable.id);
                 if (bookableIndex !== -1) {
                     bookables[bookableIndex] = bookable;
                     queryClient.setQueryData("bookables", bookables);
                 }
-                queryClient.setQueryData([ "bookable", bookable.id ], bookable);
+                queryClient.setQueryData(["bookables", bookable.id], bookable);
                 onSuccess(bookable);
             }
         }

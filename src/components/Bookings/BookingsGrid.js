@@ -9,10 +9,15 @@ import {
     makeStyles
 } from "@material-ui/core";
 import {
-    Fragment,
+    DateTime
+} from "luxon";
+import {
     useEffect
 } from "react";
 
+import {
+    Error
+} from "../Commons";
 import { 
     useBookings 
 } from "../../apis/Bookings";
@@ -45,7 +50,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
         bookable?.id, 
         week.start, 
         week.end, 
-        (bookingsArray) => {
+        bookingsArray => {
             return (
                 bookingsArray ?
                 bookingsArray.reduce(
@@ -72,61 +77,59 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
         [bookable, weekStart, setBooking]
     );
 
-    const cell = (session, date) => {
+    const BookingCell = ({session, date}) => {
         const cellData = bookings?.[session]?.[date] || grid[session][date];
         const isSelected = booking?.session === session && booking?.date === date;
         return (
-            <TableCell variant="body" align="center"
-                       className={isSelected ? classes.bookingSelected : classes.booking}
-                       onClick={isSuccess ? () => setBooking(cellData) : null}
-                       key={`${session}-${date}-cell`}>
+            <TableCell
+                variant="body"
+                align="center"
+                className={isSelected ? classes.bookingSelected : classes.booking}
+                onClick={isSuccess ? () => setBooking(cellData) : null}
+                key={`${session}-${date}-cell`}>
                 {cellData.title}
             </TableCell>
-        )
-    }
+        );
+    };
 
-    if (!grid) {
-        return <Typography variant="body1" component="p">Loading...</Typography>
-    }
+    if (!grid) return <Typography variant="body1" component="p">Loading...</Typography>;
+    if (isError) return <Error error={error}/>;
 
     return (
-        <Fragment>
-            {
-                isError &&
-                <Typography variant="body1" component="p">${error.message}</Typography>
-            }
+        <>
             <Table>
                 <TableHead>
                     <TableRow key="header">
-                        <TableCell align="center" className={classes.header} key="progress">
+                        <TableCell align="center" valign="center" className={classes.header} key="progress">
                             {
-                                isLoading &&
-                                <CircularProgress/>
+                                isLoading && <CircularProgress />
                             }
                         </TableCell>
                         {
-                            dates.map((date) => (
+                            dates.map(date =>
                                 <TableCell align="center" className={classes.header} key={`${date}-header`}>
-                                    {new Date(date).toDateString()}
+                                    {DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
                                 </TableCell>
-                            ))
+                            )
                         }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        sessions.map((session) => (
+                        sessions.map(session =>
                             <TableRow key={`${session}-row`}>
                                 <TableCell align="center" className={classes.header} key={`${session}-header`}>
                                     {session}
                                 </TableCell>
-                                {dates.map((date) => cell(session, date))}
+                                {
+                                    dates.map(date => <BookingCell date={date} session={session} />)
+                                }
                             </TableRow>
-                        ))
+                        )
                     }
                 </TableBody>
             </Table>
-        </Fragment>
+        </>
     )
 };
 

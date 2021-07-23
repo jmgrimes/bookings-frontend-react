@@ -11,7 +11,6 @@ import {
     FormLabel,
     Grid,
     TextField,
-    Typography,
     makeStyles
 } from "@material-ui/core";
 import {
@@ -20,7 +19,6 @@ import {
     Save
 } from "@material-ui/icons";
 import { 
-    Fragment, 
     useEffect,
     useMemo 
 } from "react";
@@ -37,8 +35,8 @@ import {
 const toBookable = (values) => {
     const bookable = {
         ...values,
-        days: values.days.filter((day) => (day.active)).map((day) => (day.id)),
-        sessions: values.sessions.filter((session) => (session.active)).map((session) => (session.id))
+        days: values.days.filter(day => day.active).map(day => day.id),
+        sessions: values.sessions.filter(session => session.active).map(session => session.id)
     };
     if (!bookable.id) delete bookable.id;
     return bookable
@@ -65,46 +63,54 @@ const fromBookable = (bookable) => {
 const useStyles = makeStyles(() => ({
     flexSpacer: {
         flexGrow: 1
+    },
+    sectionLabel: {
+        marginBottom: 10
+    },
+    textField: {
+        marginBottom: 10
     }
 }));
 
 const CollectionCheckbox = ({register, control, id, name, label}) => {
-    const idName = `${name}.${id}.id`;
-    const activeName = `${name}.${id}.active`;
-    const {field: activeField} = useController({control, name: activeName});
+    const idField = register(`${name}.${id}.id`, {valueAsNumber: true});
+    const {field: activeField} = useController({control, name: `${name}.${id}.active`});
     return (
-        <Fragment>
-            <input type="hidden" {...register(idName, { valueAsNumber: true })}/>
+        <>
+            <input type="hidden" {...idField}/>
             <FormControlLabel 
                 label={label}
                 control={
                     <Checkbox 
+                        key={activeField.key}
                         name={activeField.name}
                         checked={activeField.value} 
-                        onChange={(event) => activeField.onChange(event.target.checked)}
+                        onChange={event => activeField.onChange(event.target.checked)}
                     />
                 }
             />
-        </Fragment>
+        </>
     );
 }
 
 const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
     const classes = useStyles();
-    const defaultValues = useMemo(() => fromBookable(bookable), [bookable]);
-    const {control, getValues, handleSubmit, register, reset} = useForm({defaultValues});
+    const defaultValues = useMemo(
+        () => fromBookable(bookable), 
+        [bookable]
+    );
+    const {control, handleSubmit, register, reset} = useForm({defaultValues});
 
+    const idField = register("id", {valueAsNumber: true});
     const {field: titleField} = useController({control, name: "title", rules: {required: true}});
     const {field: groupField} = useController({control, name: "group", rules: {required: true}});
     const {field: notesField} = useController({control, name: "notes", rules: {required: true}});
 
     const _cancel = () => {
-        const bookable = toBookable(getValues());
         onCancel(bookable);
     }
 
     const _delete = () => {
-        const bookable = toBookable(getValues());
         onDelete(bookable);
     }
 
@@ -122,23 +128,26 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
         <Card>
             <CardHeader title={onDelete ? "Edit Bookable" : "New Bookable"}/>
             <CardContent>
-                <input type="hidden" {...register("id", {valueAsNumber: true})}/>
+                <input type="hidden" {...idField}/>
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
-                        <FormLabel component="legend">Details</FormLabel>
-                        <TextField fullWidth label="Title" {...titleField}/>
-                        <TextField fullWidth label="Group" {...groupField}/>
-                        <TextField fullWidth multiline label="Notes" {...notesField}/>
+                        <FormLabel component="legend" className={classes.sectionLabel}>Details</FormLabel>
+                        <TextField fullWidth label="Title" className={classes.textField} {...titleField}/>
+                        <TextField fullWidth label="Group" className={classes.textField} {...groupField}/>
+                        <TextField fullWidth multiline label="Notes" className={classes.textField} {...notesField}/>
                     </Grid>
                     <Grid item xs={3}>
                         <FormControl component="fieldset">
-                            <FormLabel component="legend">Days</FormLabel>
+                            <FormLabel component="legend" className={classes.sectionLabel}>Days</FormLabel>
                             <FormGroup>
                                 { 
                                     daysArray.map((day, id) => (
                                         <CollectionCheckbox 
-                                            register={register} control={control} 
-                                            id={id} name="days" label={day}
+                                            register={register} 
+                                            control={control} 
+                                            label={day}
+                                            id={id}
+                                            name="days" 
                                         />
                                     ))
                                 }
@@ -147,13 +156,16 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                     </Grid>
                     <Grid item xs={3}>
                         <FormControl component="fieldset">
-                            <FormLabel component="legend">Sessions</FormLabel>
+                            <FormLabel component="legend" className={classes.sectionLabel}>Sessions</FormLabel>
                             <FormGroup>
                                 { 
                                     sessionsArray.map((session, id) => (
                                         <CollectionCheckbox 
-                                            register={register} control={control} 
-                                            id={id} name="sessions" label={session}
+                                            register={register} 
+                                            control={control} 
+                                            label={session}
+                                            id={id} 
+                                            name="sessions"
                                         />
                                     ))
                                 }
@@ -163,7 +175,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                 </Grid>
             </CardContent>
             <CardActions>
-                <Typography variant="body1" component="div" className={classes.flexSpacer}/>
+                <div className={classes.flexSpacer}/>
                 <Button variant="contained" color="primary" startIcon={<Save/>} onClick={_save}>Save</Button>
                 { 
                     onDelete && 
@@ -172,7 +184,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                     </Button> 
                 }
                 <Button variant="contained" startIcon={<Cancel/>} onClick={_cancel}>Cancel</Button>
-                <Typography variant="body1" component="div" className={classes.flexSpacer}/>
+                <div className={classes.flexSpacer}/>
             </CardActions>
         </Card>
     );

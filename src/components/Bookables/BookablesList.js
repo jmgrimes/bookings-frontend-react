@@ -14,9 +14,6 @@ import {
     DevicesOther
 } from "@material-ui/icons";
 import {
-    Fragment
-} from "react";
-import {
     useNavigate
 } from "react-router-dom";
 
@@ -24,11 +21,11 @@ const BookablesList = ({bookable, bookables, getUrl}) => {
     const navigate = useNavigate();
 
     const group = bookable?.group;
-    const groups = [...new Set(bookables.map((b) => (b.group)))];
-    const bookablesInGroup = bookables.filter((b) => (b.group === group));
+    const groups = [...new Set(bookables.map(b => b.group))];
+    const bookablesInGroup = bookables.filter(b => b.group === group);
 
     const changeGroup = (group) => {
-        const bookablesInSelectedGroup = bookables.filter((b) => (b.group === group));
+        const bookablesInSelectedGroup = bookables.filter(b => b.group === group);
         navigate(getUrl(bookablesInSelectedGroup[0].id));
     }
 
@@ -47,13 +44,15 @@ const BookablesList = ({bookable, bookables, getUrl}) => {
     }
 
     return (
-        <Fragment>
-            <Select fullWidth value={group || ""} onChange={(event) => changeGroup(event.target.value)}>
-                {groups.map(group => <MenuItem value={group} key={group}>{group}</MenuItem>)}
+        <>
+            <Select fullWidth value={group || ""} onChange={event => changeGroup(event.target.value)}>
+                {
+                    groups.map(group => <MenuItem value={group} key={group}>{group}</MenuItem>)
+                }
             </Select>
             <List>
                 {
-                    bookablesInGroup.map((b) => (
+                    bookablesInGroup.map(b => (
                         <ListItem button key={b.id} selected={b === bookable} onClick={() => navigate(getUrl(b.id))}>
                             <ListItemIcon>
                                 <DevicesOther/>
@@ -67,7 +66,7 @@ const BookablesList = ({bookable, bookables, getUrl}) => {
                 <Button color="primary" startIcon={<ArrowLeft/>} onClick={previousBookable}>Prev</Button>
                 <Button color="primary" endIcon={<ArrowRight/>} onClick={nextBookable}>Next</Button>
             </ButtonGroup>
-        </Fragment>
+        </>
     );
 };
 

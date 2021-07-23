@@ -18,7 +18,7 @@ import Booking from "./Booking";
 
 const BookingDetails = ({bookable, booking}) => {
     const [user] = useUser();
-    const isBookingUser = booking && user && (booking.bookerId === user.id);
+    const isBookingUser = booking && user && booking.bookerId === user.id;
 
     return (
         <Card>

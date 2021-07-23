@@ -1,45 +1,28 @@
 import {
-    CircularProgress,
-    Grid,
-    Typography
-} from "@material-ui/core";
-import { 
     useNavigate 
 } from "react-router";
 
+import {
+    Error,
+    Loading
+} from "../Commons";
 import {
     useCreateBookable
 } from "../../apis/Bookables";
 
 import BookableForm from "./BookableForm";
 
+
 const BookableNew = () => {
     const navigate = useNavigate();
-    const {createBookable, error, isLoading, isError} = useCreateBookable((newBookable) => {
-        navigate(`/bookables/${newBookable.id}`);
+    const {createBookable, error, isLoading, isError} = useCreateBookable(bookable => {
+        navigate(`/bookables/${bookable.id}`);
     });
 
     const bookable = {};
 
-    if (isError) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="body1" component="p">{error.message}</Typography>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <Grid container alignContent="center" justifyContent="center" spacing={3}>
-                <Grid item xs={12}>
-                    <CircularProgress/>
-                </Grid>
-            </Grid>
-        );
-    }
+    if (isLoading) return <Loading/>;
+    if (isError) return <Error error={error}/>;
 
     return (
         <BookableForm 

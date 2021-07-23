@@ -7,12 +7,12 @@ import {
 } from "../../static.json";
 
 const getGrid = (bookable, startDate) => {
-    const dates = bookable.days.sort().map((day) => (startDate.plus({ days: day }).toISODate()));
-    const sessions = bookable.sessions.map((session) => sessionNames[session]);
+    const dates = bookable.days.sort().map(day => startDate.plus({ days: day }).toISODate());
+    const sessions = bookable.sessions.map(session => sessionNames[session]);
     const grid = {};
-    sessions.forEach((session) => {
+    sessions.forEach(session => {
         grid[session] = {};
-        dates.forEach((date) => {
+        dates.forEach(date => {
             grid[session][date] = {
                 session,
                 date,

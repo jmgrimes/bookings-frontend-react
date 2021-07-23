@@ -3,11 +3,11 @@ import {
 } from "react-query";
 
 const url = "http://localhost:3001/users";
-const useUsers = (transform = ((users) => (users))) => {
+const useUsers = (transform = users => users) => {
     const result = useQuery(
         "users",
         () => fetch(url)
-            .then((response) => {
+            .then(response => {
                 if (!response.ok) {
                     throw new Error(
                         `There was a problem fetching users data from the users resource endpoint (${url}).`
