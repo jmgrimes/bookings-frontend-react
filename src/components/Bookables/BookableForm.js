@@ -143,6 +143,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                                 { 
                                     daysArray.map((day, id) => (
                                         <CollectionCheckbox 
+                                            key={`days.${id}`}
                                             register={register} 
                                             control={control} 
                                             label={day}
@@ -161,6 +162,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                                 { 
                                     sessionsArray.map((session, id) => (
                                         <CollectionCheckbox 
+                                            key={`sessions.${id}`}
                                             register={register} 
                                             control={control} 
                                             label={session}

@@ -28,7 +28,9 @@ import useGrid from "./useGrid";
 const useStyles = makeStyles((theme) => ({
     header: {
         color: theme.palette.primary.contrastText,
-        background: theme.palette.primary.dark
+        background: theme.palette.primary.dark,
+        height: 80,
+        fontWeight: "bold"
     },
     booking: {
         color: theme.palette.grey.A900,
@@ -86,7 +88,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
                 align="center"
                 className={isSelected ? classes.bookingSelected : classes.booking}
                 onClick={isSuccess ? () => setBooking(cellData) : null}
-                key={`${session}-${date}-cell`}>
+                key={`${session}-${date}-booking-cell`}>
                 {cellData.title}
             </TableCell>
         );
@@ -122,7 +124,13 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
                                     {session}
                                 </TableCell>
                                 {
-                                    dates.map(date => <BookingCell date={date} session={session} />)
+                                    dates.map(date => 
+                                        <BookingCell 
+                                            key={`${session}-${date}-booking`} 
+                                            session={session} 
+                                            date={date}
+                                        />
+                                    )
                                 }
                             </TableRow>
                         )

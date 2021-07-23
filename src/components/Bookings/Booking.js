@@ -2,6 +2,9 @@ import {
     Typography,
     makeStyles
 } from "@material-ui/core";
+import {
+    DateTime
+} from "luxon";
 
 const useStyles = makeStyles(() => ({
     field: {
@@ -30,7 +33,9 @@ const Booking = ({bookable, booking}) => {
             </div>
             <div className={classes.field}>
                 <Typography variant="body1" component="label">Booking Date</Typography>
-                <Typography variant="body1" component="p">{new Date(date).toDateString()}</Typography>
+                <Typography variant="body1" component="p">
+                    {DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
+                </Typography>
             </div>
             <div className={classes.field}>
                 <Typography variant="body1" component="label">Session</Typography>
