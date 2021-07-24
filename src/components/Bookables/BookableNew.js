@@ -1,32 +1,15 @@
-import {
-    useNavigate 
-} from "react-router";
-
-import {
-    Error,
-    Loading
-} from "../Commons";
-import {
-    useCreateBookable
-} from "../../apis/Bookables";
+import {useNavigate} from "react-router";
 
 import BookableForm from "./BookableForm";
-
+import {useCreateBookable} from "../../apis/Bookables";
 
 const BookableNew = () => {
     const navigate = useNavigate();
-    const {createBookable, error, isLoading, isError} = useCreateBookable(bookable => {
-        navigate(`/bookables/${bookable.id}`);
-    });
-
-    const bookable = {};
-
-    if (isLoading) return <Loading/>;
-    if (isError) return <Error error={error}/>;
+    const {createBookable} = useCreateBookable(bookable => navigate(`/bookables/${bookable.id}`));
 
     return (
         <BookableForm 
-            bookable={bookable}
+            bookable={{}}
             onSave={createBookable}
             onCancel={() => navigate(`/bookables`)}
         />

@@ -1,38 +1,20 @@
-import {
-    useNavigate, 
-    useParams 
-} from "react-router-dom";
-
-import {
-    Error,
-    Loading
-} from "../Commons";
-import {
-    useBookable, 
-    useDeleteBookable,
-    useUpdateBookable
-} from "../../apis/Bookables";
+import {useNavigate, useParams} from "react-router";
 
 import BookableForm from "./BookableForm";
+import {Error, Loading} from "../Commons";
+import {useBookable, useDeleteBookable, useUpdateBookable} from "../../apis/Bookables";
 
 const BookableEdit = () => {
-    const {id} = useParams();
     const navigate = useNavigate();
-    
-    const {
-        bookable, 
-        error: queryError, 
-        isError: isQueryError, 
-        isLoading: isQueryLoading
-    } = useBookable(id);
 
+    const {id} = useParams();
+    const {bookable} = useBookable(id, {suspense: true});
     const {
-        updateBookable, 
-        error: updateError, 
-        isError: isUpdateError, 
+        updateBookable,
+        error: updateError,
+        isError: isUpdateError,
         isLoading: isUpdateLoading
     } = useUpdateBookable(bookable => navigate(`/bookables/${bookable.id}`));
-
     const {
         deleteBookable,
         error: deleteError,
@@ -40,25 +22,17 @@ const BookableEdit = () => {
         isLoading: isDeleteLoading
     } = useDeleteBookable(() => navigate("/bookables"));
 
-    const isError = isQueryError || isUpdateError || isDeleteError;
-    const isLoading = isQueryLoading || isUpdateLoading || isDeleteLoading;
-    const error = queryError || updateError || deleteError;
+    if (isUpdateLoading) return <Loading message="Updating bookable..."/>;
+    if (isUpdateError) return <Error error={updateError}/>;
 
-    if (isLoading) return (
-        <Loading/>
-    );
-
-    if (isError) return (
-        <Error error={error}/>
-    );
+    if (isDeleteLoading) return <Loading message="Deleting bookable..."/>;
+    if (isDeleteError) return <Error error={deleteError}/>;
 
     return (
-        <BookableForm 
-            bookable={bookable}
-            onSave={updateBookable}
-            onDelete={deleteBookable}
-            onCancel={() => navigate(`/bookables/${id}`)}
-        />
+        <BookableForm bookable={bookable}
+                      onSave={updateBookable}
+                      onDelete={deleteBookable}
+                      onCancel={() => navigate(`/bookables/${id}`)}/>
     );
 }
 

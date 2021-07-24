@@ -18,19 +18,10 @@ import {
     Delete,
     Save
 } from "@material-ui/icons";
-import { 
-    useEffect,
-    useMemo 
-} from "react";
-import {
-    useController,
-    useForm
-} from "react-hook-form"
+import React from "react";
+import {useController, useForm} from "react-hook-form"
 
-import {
-    days as daysArray, 
-    sessions as sessionsArray
-} from "../../static.json";
+import {days as daysArray, sessions as sessionsArray} from "../../static.json";
 
 const toBookable = (values) => {
     const bookable = {
@@ -82,7 +73,7 @@ const CollectionCheckbox = ({register, control, id, name, label}) => {
                 label={label}
                 control={
                     <Checkbox 
-                        key={activeField.key}
+                        key={activeField.name}
                         name={activeField.name}
                         checked={activeField.value} 
                         onChange={event => activeField.onChange(event.target.checked)}
@@ -95,7 +86,7 @@ const CollectionCheckbox = ({register, control, id, name, label}) => {
 
 const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
     const classes = useStyles();
-    const defaultValues = useMemo(
+    const defaultValues = React.useMemo(
         () => fromBookable(bookable), 
         [bookable]
     );
@@ -119,7 +110,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
         onSave(bookable);
     });
 
-    useEffect(
+    React.useEffect(
         () => reset(fromBookable(bookable)),
         [bookable, reset]
     );
@@ -141,16 +132,14 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                             <FormLabel component="legend" className={classes.sectionLabel}>Days</FormLabel>
                             <FormGroup>
                                 { 
-                                    daysArray.map((day, id) => (
-                                        <CollectionCheckbox 
-                                            key={`days.${id}`}
-                                            register={register} 
-                                            control={control} 
-                                            label={day}
-                                            id={id}
-                                            name="days" 
-                                        />
-                                    ))
+                                    daysArray.map((day, id) =>
+                                        <CollectionCheckbox register={register}
+                                                            control={control}
+                                                            label={day}
+                                                            id={id}
+                                                            name="days"
+                                                            key={`days.${id}`}/>
+                                    )
                                 }
                             </FormGroup>
                         </FormControl>
@@ -160,16 +149,14 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                             <FormLabel component="legend" className={classes.sectionLabel}>Sessions</FormLabel>
                             <FormGroup>
                                 { 
-                                    sessionsArray.map((session, id) => (
-                                        <CollectionCheckbox 
-                                            key={`sessions.${id}`}
-                                            register={register} 
-                                            control={control} 
-                                            label={session}
-                                            id={id} 
-                                            name="sessions"
-                                        />
-                                    ))
+                                    sessionsArray.map((session, id) =>
+                                        <CollectionCheckbox register={register}
+                                                            control={control}
+                                                            label={session}
+                                                            id={id}
+                                                            name="sessions"
+                                                            key={`sessions.${id}`}/>
+                                    )
                                 }
                             </FormGroup>
                         </FormControl>

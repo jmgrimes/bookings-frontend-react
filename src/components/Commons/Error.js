@@ -1,19 +1,22 @@
 import {
-    Grid,
-    Typography,
-    makeStyles
+    Grid, makeStyles,
+    Typography
 } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
     jumbotron: {
-        minHeight: "50vh"
+        marginTop: 75
     }
 }));
 
-const Error = ({error}) => {
+const Error = ({error, jumbotron = false}) => {
     const classes = useStyles();
     return (
-        <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.jumbotron}>
+        <Grid container
+              alignItems="center"
+              justifyContent="center"
+              className={jumbotron ? classes.jumbotron : ""}
+              spacing={3}>
             <Typography variant="body1" component="p">{error.message}</Typography>
         </Grid>
     );

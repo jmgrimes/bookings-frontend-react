@@ -1,32 +1,21 @@
 import {
     Grid
 } from "@material-ui/core";
-import {
-    useParams
-} from "react-router-dom";
-
-import {
-    Error,
-    Loading
-} from "../Commons";
-import {
-    useUsers 
-} from "../../apis/Users";
+import {useParams} from "react-router";
 
 import UserDetails from "./UserDetails";
 import UsersList from "./UsersList";
-import { useUser } from "./UserProvider";
+import {useUser} from "./UserProvider";
+import {useUsers} from "../../apis/Users";
+
+const getUrl = id => `/users/${id}`;
 
 const UsersView = () => {
     const {id} = useParams();
-    const {users, error, isError, isLoading} = useUsers();
+    const {users} = useUsers({suspense: true});
     const [currentUser] = useUser();
 
     const user = id ? users.find(u => u.id === parseInt(id, 10)) || users[0] : currentUser;
-    const getUrl = id => `/users/${id}`;
-
-    if (isLoading) return <Loading/>;
-    if (isError) return <Error error={error}/>;
 
     return (
         <Grid container spacing={3}>

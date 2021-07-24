@@ -10,11 +10,8 @@ import {
     Edit
 } from "@material-ui/icons"
 
-import {
-    useUser
-} from "../Users";
-
 import Booking from "./Booking";
+import {useUser} from "../Users";
 
 const BookingDetails = ({bookable, booking}) => {
     const [user] = useUser();

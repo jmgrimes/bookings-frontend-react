@@ -11,12 +11,8 @@ import {
     CalendarToday,
     EventAvailable
 } from "@material-ui/icons";
-import {
-    DateTime
-} from "luxon";
-import {
-    useState
-} from "react";
+import {DateTime} from "luxon";
+import React from "react";
 
 import useBookingsParams from "./useBookingsParams";
 
@@ -31,7 +27,7 @@ const useStyles = makeStyles(() => ({
 
 const WeekPicker = () => {
     const classes = useStyles();
-    const [dateText, setDateText] = useState(DateTime.now().toISODate());
+    const [dateText, setDateText] = React.useState(DateTime.now().toISODate());
     const {date, setBookingsDate} = useBookingsParams();
     const dates = {
         previous: date.minus({ days: 7 }),
@@ -43,10 +39,13 @@ const WeekPicker = () => {
         <Toolbar>
             <Button startIcon={<ArrowLeft/>} onClick={() => setBookingsDate(dates.previous)}>Previous</Button>
             <div className={classes.flexSpacer}/>
-            <TextField type="date" value={dateText} onChange={(event) => setDateText(event.target.value)}/>
+            <TextField type="date" value={dateText} onChange={event => setDateText(event.target.value)}/>
             <div className={classes.flexSpacer}/>
             <ButtonGroup variant="text">
-                <Button startIcon={<EventAvailable/>} onClick={() => setBookingsDate(DateTime.fromISO(dateText))}>Go</Button>
+                <Button startIcon={<EventAvailable/>}
+                        onClick={() => setBookingsDate(DateTime.fromISO(dateText))}>
+                    Go
+                </Button>
                 <Button startIcon={<CalendarToday/>} onClick={() => setBookingsDate(dates.today)}>Today</Button>
             </ButtonGroup>
             <div className={classes.flexSpacer}/>

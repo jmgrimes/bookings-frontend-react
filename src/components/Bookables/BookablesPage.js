@@ -1,18 +1,16 @@
 import {
     Container
 } from "@material-ui/core";
-import {
-    Route,
-    Routes
-} from "react-router-dom";
+import React from "react";
+import {Route, Routes} from "react-router";
 
-import BookableEdit from "./BookableEdit";
-import BookableNew from "./BookableNew";
-import BookablesView from "./BookablesView";
+const BookableEdit = React.lazy(() => import("./BookableEdit").then(module => ({default: module.default})));
+const BookableNew = React.lazy(() => import("./BookableNew").then(module => ({default: module.default})));
+const BookablesView = React.lazy(() => import("./BookablesView").then(module => ({default: module.default})));
 
 const BookablesPage = () => {
     return (
-        <Container className="bookables-page" component="main" maxWidth="lg">
+        <Container component="main" maxWidth="lg">
             <Routes>
                 <Route path="/">
                     <BookablesView/>

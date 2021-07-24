@@ -1,39 +1,71 @@
 import {
-    CircularProgress,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-    Typography,
     makeStyles
 } from "@material-ui/core";
 import {
-    DateTime
-} from "luxon";
-import {
-    useEffect
-} from "react";
-
-import {
-    Error
-} from "../Commons";
-import { 
-    useBookings 
-} from "../../apis/Bookings";
+    Skeleton
+} from "@material-ui/lab"
+import {DateTime} from "luxon";
+import React from "react";
 
 import useBookingsParams from "./useBookingsParams";
-import useGrid from "./useGrid";
+import {Error} from "../Commons";
+import {sessions as sessionNames} from "../../static.json";
+import {useBookings} from "../../apis/Bookings";
+
+const gridFrom = (bookable, startDate) => {
+    const dates = bookable.days.sort().map(day => startDate.plus({ days: day }).toISODate());
+    const sessions = bookable.sessions.map(session => sessionNames[session]);
+    const grid = {};
+    sessions.forEach(session => {
+        grid[session] = {};
+        dates.forEach(date => {
+            grid[session][date] = {
+                session,
+                date,
+                bookableId: bookable.id,
+                title: ""
+            };
+        });
+    });
+    return {
+        grid,
+        dates,
+        sessions
+    };
+};
+
+const transform = bookingsArray => {
+    return (
+        bookingsArray ?
+            bookingsArray.reduce(
+                (bookings, booking) => {
+                    const {session, date} = booking;
+                    if (!bookings[session]) {
+                        bookings[session] = {};
+                    }
+                    bookings[session][date] = booking;
+                    return bookings;
+                },
+                {}
+            ) :
+            {}
+    );
+}
 
 const useStyles = makeStyles((theme) => ({
     header: {
         color: theme.palette.primary.contrastText,
         background: theme.palette.primary.dark,
-        height: 80,
+        height: 55,
         fontWeight: "bold"
     },
     booking: {
-        color: theme.palette.grey.A900,
+        color: theme.palette.grey.A700,
         "&:hover": {
             background: theme.palette.grey.A100
         }
@@ -47,32 +79,15 @@ const useStyles = makeStyles((theme) => ({
 const BookingsGrid = ({bookable, booking, setBooking}) => {
     const classes = useStyles();
     const {week} = useBookingsParams();
-    const {grid, sessions, dates} = useGrid(bookable, week.start);
-    const {bookings, error, isError, isLoading, isSuccess} = useBookings(
-        bookable?.id, 
-        week.start, 
-        week.end, 
-        bookingsArray => {
-            return (
-                bookingsArray ?
-                bookingsArray.reduce(
-                    (bookings, booking) => {
-                        const {session, date} = booking;
-                        if (!bookings[session]) {
-                            bookings[session] = {};
-                        }
-                        bookings[session][date] = booking;
-                        return bookings;
-                    },
-                    {}
-                ) :
-                {}
-            );
-        }
+    const {grid, sessions, dates} = gridFrom(bookable, week.start);
+    const {bookings: bookingsArray, error, isError, isLoading, isSuccess} = useBookings(
+        bookable.id, week.start, week.end
     );
 
+    const bookings = transform(bookingsArray);
     const weekStart = week.start.toISODate();
-    useEffect(
+
+    React.useEffect(
         () => {
             setBooking(null);
         },
@@ -83,30 +98,23 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
         const cellData = bookings?.[session]?.[date] || grid[session][date];
         const isSelected = booking?.session === session && booking?.date === date;
         return (
-            <TableCell
-                variant="body"
-                align="center"
-                className={isSelected ? classes.bookingSelected : classes.booking}
-                onClick={isSuccess ? () => setBooking(cellData) : null}
-                key={`${session}-${date}-booking-cell`}>
-                {cellData.title}
+            <TableCell variant="body"
+                       align="center"
+                       key={`${session}-${date}-booking-cell`}
+                       className={isSelected ? classes.bookingSelected : classes.booking}
+                       onClick={isSuccess ? () => setBooking(cellData) : null}>
+                {isLoading ? <Skeleton variant="text" animation="wave"/> : cellData.title}
             </TableCell>
         );
     };
 
-    if (!grid) return <Typography variant="body1" component="p">Loading...</Typography>;
-    if (isError) return <Error error={error}/>;
-
     return (
         <>
+            {isError && <Error error={error}/>}
             <Table>
                 <TableHead>
                     <TableRow key="header">
-                        <TableCell align="center" valign="center" className={classes.header} key="progress">
-                            {
-                                isLoading && <CircularProgress />
-                            }
-                        </TableCell>
+                        <TableCell align="center" valign="center" className={classes.header} key="nexus"/>
                         {
                             dates.map(date =>
                                 <TableCell align="center" className={classes.header} key={`${date}-header`}>
@@ -124,12 +132,10 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
                                     {session}
                                 </TableCell>
                                 {
-                                    dates.map(date => 
-                                        <BookingCell 
-                                            key={`${session}-${date}-booking`} 
-                                            session={session} 
-                                            date={date}
-                                        />
+                                    dates.map(date =>
+                                        <BookingCell key={`${session}-${date}-booking`}
+                                                     session={session}
+                                                     date={date}/>
                                     )
                                 }
                             </TableRow>
@@ -138,7 +144,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
                 </TableBody>
             </Table>
         </>
-    )
+    );
 };
 
 export default BookingsGrid;

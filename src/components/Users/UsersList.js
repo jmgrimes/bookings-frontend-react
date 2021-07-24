@@ -7,9 +7,7 @@ import {
 import {
     Person
 } from "@material-ui/icons";
-import {
-    useNavigate
-} from "react-router-dom";
+import {useNavigate} from "react-router";
 
 const UsersList = ({users, user, getUrl}) => {
     const navigate = useNavigate();
@@ -17,7 +15,10 @@ const UsersList = ({users, user, getUrl}) => {
         <List item>
             {
                 users.map(u => (
-                    <ListItem button key={u.id} selected={u.id === user?.id} onClick={() => navigate(getUrl(u.id))}>
+                    <ListItem button
+                              key={u.id}
+                              selected={u.id === user?.id}
+                              onClick={() => navigate(getUrl(u.id))}>
                         <ListItemIcon>
                             <Person/>
                         </ListItemIcon>

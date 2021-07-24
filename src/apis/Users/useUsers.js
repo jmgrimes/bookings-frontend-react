@@ -1,9 +1,7 @@
-import {
-    useQuery
-} from "react-query";
+import {useQuery} from "react-query";
 
 const url = "http://localhost:3001/users";
-const useUsers = (transform = users => users) => {
+const useUsers = (options = {}) => {
     const result = useQuery(
         "users",
         () => fetch(url)
@@ -14,11 +12,12 @@ const useUsers = (transform = users => users) => {
                     );
                 }
                 return response.json();
-            })
+            }),
+        options
     );
     return {
         ...result,
-        users: transform(result.data || [])
+        users: result.data || []
     };
 }
 

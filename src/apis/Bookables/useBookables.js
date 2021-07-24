@@ -1,9 +1,7 @@
-import {
-    useQuery
-} from "react-query";
+import {useQuery} from "react-query";
 
 const url = "http://localhost:3001/bookables";
-const useBookables = (transform = bookables => bookables) => {
+const useBookables = (options = {}) => {
     const result = useQuery(
         "bookables",
         () => fetch(url)
@@ -14,11 +12,12 @@ const useBookables = (transform = bookables => bookables) => {
                     );
                 }
                 return response.json();
-            })
+            }),
+        options
     );
     return {
         ...result,
-        bookables: transform(result.data || [])
+        bookables: result.data || []
     };
 }
 

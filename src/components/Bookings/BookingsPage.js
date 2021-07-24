@@ -1,6 +1,4 @@
-import {
-    Container
-} from "@material-ui/core";
+import {Container} from "@material-ui/core";
 
 import BookingsView from "./BookingsView";
 

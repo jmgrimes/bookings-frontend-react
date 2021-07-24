@@ -1,10 +1,7 @@
-import {
-    useQuery,
-    useQueryClient
-} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 
 const baseUrl = "http://localhost:3001/bookables"
-const useBookable = (bookableId, transform = bookable => bookable) => {
+const useBookable = (bookableId, options = {}) => {
     const url = `${baseUrl}/${bookableId}`;
     const queryClient = useQueryClient();
     const result = useQuery(
@@ -19,12 +16,13 @@ const useBookable = (bookableId, transform = bookable => bookable) => {
                 return response.json();
             }),
         {
-            initialData: queryClient.getQueryData("bookables")?.find((b) => (b.id === parseInt(bookableId, 10)))
+            ...options,
+            initialData: queryClient.getQueryData("bookables")?.find((b) => (b.id === parseInt(bookableId, 10))),
         }
     );
     return {
         ...result,
-        bookable: transform(result.data || {})
+        bookable: result.data || {}
     };
 }
 

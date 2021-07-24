@@ -1,14 +1,10 @@
-import {
-    createContext,
-    useContext,
-    useState
-} from "react";
+import React from "react";
 
-const UserContext = createContext();
-const UserSetContext = createContext();
+const UserContext = React.createContext();
+const UserSetContext = React.createContext();
 
 const UserProvider = ({children}) => {
-    const [user, setUser] = useState();
+    const [user, setUser] = React.useState();
     return (
         <UserContext.Provider value={user}>
             <UserSetContext.Provider value={setUser}>
@@ -19,8 +15,8 @@ const UserProvider = ({children}) => {
 };
 
 const useUser = () => {
-    const user = useContext(UserContext);
-    const setUser = useContext(UserSetContext);
+    const user = React.useContext(UserContext);
+    const setUser = React.useContext(UserSetContext);
     if (!setUser) {
         throw new Error("The UserProvider is missing.");
     }

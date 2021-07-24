@@ -1,12 +1,10 @@
 import {
     Container
 } from "@material-ui/core";
-import {
-    Route,
-    Routes
-} from "react-router-dom";
+import React from "react";
+import {Route, Routes} from "react-router";
 
-import UsersView from "./UsersView";
+const UsersView = React.lazy(() => import("./UsersView").then(module => ({default: module.default})));
 
 const UsersPage = () => {
     return (

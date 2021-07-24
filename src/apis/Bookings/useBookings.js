@@ -1,9 +1,7 @@
-import {
-    useQuery
-} from "react-query";
+import {useQuery} from "react-query";
 
 const baseUrl = "http://localhost:3001/bookings";
-const useBookings = (bookableId, startDate, endDate, transform = bookings => bookings) => {
+const useBookings = (bookableId, startDate, endDate, options = {}) => {
     const start = startDate.toISODate();
     const end = endDate.toISODate();
     const url = `${baseUrl}?bookableId=${bookableId}&date_gte=${start}&date_lte=${end}`;
@@ -17,11 +15,12 @@ const useBookings = (bookableId, startDate, endDate, transform = bookings => boo
                     );
                 }
                 return response.json();
-            })
+            }),
+        options
     );
     return {
         ...result,
-        bookings: transform(result.data || [])
+        bookings: result.data || []
     };
 }
 

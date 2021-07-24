@@ -17,20 +17,13 @@ import {
     Visibility,
     VisibilityOff
 } from "@material-ui/icons";
-import {
-    useState
-} from "react";
-import {
-    Link
-} from "react-router-dom";
+import React from "react";
+import {Link} from "react-router-dom";
 
-import {
-    days,
-    sessions
-} from "../../static.json";
+import {days, sessions} from "../../static.json";
 
 const BookableDetails = ({bookable}) => {
-    const [showDetails, setShowDetails] = useState(true);
+    const [showDetails, setShowDetails] = React.useState(true);
     const toggleDetails = () => setShowDetails(showDetails => !showDetails);
 
     return (

@@ -1,23 +1,16 @@
 import {
-    CircularProgress,
     FormControl,
     MenuItem,
-    Select,
-    Typography
+    Select
 } from "@material-ui/core";
-import {
-    useEffect
-} from "react";
+import React from "react";
 
-import {
-    useUsers 
-} from "../../apis/Users";
-
-import { useUser } from "./UserProvider";
+import {useUser} from "./UserProvider";
+import {useUsers} from "../../apis/Users";
 
 const UserPicker = () => {
     const [user, setUser] = useUser();
-    const {users, error, isError, isLoading} = useUsers();
+    const {users} = useUsers({suspense: true});
 
     const changeUser = event => {
         const selectedUserId = parseInt(event.target.value, 10);
@@ -25,24 +18,12 @@ const UserPicker = () => {
         setUser(selectedUser);
     };
 
-    useEffect(
+    React.useEffect(
         () => {
             setUser(users[0]);
         },
         [users, setUser]
     );
-
-    if (isError) {
-        return (
-            <Typography variant="body1" component="p">{error.message}</Typography>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <CircularProgress/>
-        );
-    }
 
     return (
         <FormControl>
