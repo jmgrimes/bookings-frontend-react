@@ -1,0 +1,28 @@
+server {
+  listen 80;
+
+  access_log ${NGINX_ACCESS_LOGS};
+  error_log ${NGINX_ERROR_LOGS};
+
+  location / {
+    root /usr/share/nginx/html;
+    index index.html;
+
+    set $fallback_file /index.html;
+    if ($http_accept !~ text/html) {
+        set $fallback_file /null;
+    }
+    try_files $uri $fallback_file;
+  }
+
+  error_page 404 /index.html;
+  location = / {
+    root /usr/share/nginx/html;
+    internal;
+  }
+
+  error_page 500 502 503 504 /50x.html;
+  location = /50x.html {
+    root   /usr/share/nginx/html;
+  }
+}

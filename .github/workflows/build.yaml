@@ -1,0 +1,32 @@
+name: Build Workflow
+on:
+  pull_request:
+    pathsignore:
+      - 'catalog-info.yaml'
+      - 'mkdocs.yml'
+      - 'docs/**'
+  push:
+    pathsignore:
+      - 'catalog-info.yaml'
+      - 'mkdocs.yml'
+      - 'docs/**'
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+      - name: Build Docker Image and Publish
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: jmgrimes/react-bookings-app/react-bookings-app
+          add_git_labels: true
+          tag_with_ref: true
+          push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
