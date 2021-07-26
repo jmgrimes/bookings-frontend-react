@@ -9,13 +9,19 @@ import {
 import {
     Skeleton
 } from "@material-ui/lab"
-import {DateTime} from "luxon";
-import React from "react";
+import {
+    DateTime
+} from "luxon";
+import {
+    useEffect
+} from "react";
+import {
+    sessionNames
+} from "../../static.json";
 
+import Error from "../Commons/Error";
+import useBookings from "../Bookings/useBookings";
 import useBookingsParams from "./useBookingsParams";
-import {Error} from "../Commons";
-import {sessions as sessionNames} from "../../static.json";
-import {useBookings} from "../../apis/Bookings";
 
 const gridFrom = (bookable, startDate) => {
     const dates = bookable.days.sort().map(day => startDate.plus({ days: day }).toISODate());
@@ -87,7 +93,7 @@ const BookingsGrid = ({bookable, booking, setBooking}) => {
     const bookings = transform(bookingsArray);
     const weekStart = week.start.toISODate();
 
-    React.useEffect(
+    useEffect(
         () => {
             setBooking(null);
         },

@@ -11,8 +11,12 @@ import {
     CalendarToday,
     EventAvailable
 } from "@material-ui/icons";
-import {DateTime} from "luxon";
-import React from "react";
+import {
+    DateTime
+} from "luxon";
+import {
+    useState
+} from "react";
 
 import useBookingsParams from "./useBookingsParams";
 
@@ -27,7 +31,7 @@ const useStyles = makeStyles(() => ({
 
 const WeekPicker = () => {
     const classes = useStyles();
-    const [dateText, setDateText] = React.useState(DateTime.now().toISODate());
+    const [dateText, setDateText] = useState(DateTime.now().toISODate());
     const {date, setBookingsDate} = useBookingsParams();
     const dates = {
         previous: date.minus({ days: 7 }),
@@ -35,21 +39,26 @@ const WeekPicker = () => {
         today: DateTime.now()
     };
 
+    const go = () => setBookingsDate(DateTime.fromISO(dateText));
+    const next = () => setBookingsDate(dates.next);
+    const previous = () => setBookingsDate(dates.previous);
+
+    const today = () => {
+        setDateText(dates.today.toISODate());
+        setBookingsDate(dates.today);
+    }
+
     return (
         <Toolbar>
-            <Button startIcon={<ArrowLeft/>} onClick={() => setBookingsDate(dates.previous)}>Previous</Button>
+            <Button startIcon={<ArrowLeft/>} onClick={previous}>Previous</Button>
             <div className={classes.flexSpacer}/>
             <TextField type="date" value={dateText} onChange={event => setDateText(event.target.value)}/>
-            <div className={classes.flexSpacer}/>
             <ButtonGroup variant="text">
-                <Button startIcon={<EventAvailable/>}
-                        onClick={() => setBookingsDate(DateTime.fromISO(dateText))}>
-                    Go
-                </Button>
-                <Button startIcon={<CalendarToday/>} onClick={() => setBookingsDate(dates.today)}>Today</Button>
+                <Button startIcon={<EventAvailable/>} onClick={go}>Go</Button>
+                <Button startIcon={<CalendarToday/>} onClick={today}>Today</Button>
             </ButtonGroup>
             <div className={classes.flexSpacer}/>
-            <Button endIcon={<ArrowRight/>} onClick={() => setBookingsDate(dates.next)}>Next</Button>
+            <Button endIcon={<ArrowRight/>} onClick={next}>Next</Button>
         </Toolbar>
     );
 };

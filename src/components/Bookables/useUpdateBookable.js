@@ -1,4 +1,7 @@
-import {useMutation, useQueryClient} from "react-query";
+import {
+    useMutation, 
+    useQueryClient
+} from "react-query";
 
 const baseUrl = "http://localhost:3001/bookables";
 const useUpdateBookable = (onSuccess = () => {}) => {

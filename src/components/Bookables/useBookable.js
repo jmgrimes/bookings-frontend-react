@@ -1,4 +1,7 @@
-import {useQuery, useQueryClient} from "react-query";
+import {
+    useQuery, 
+    useQueryClient
+} from "react-query";
 
 const baseUrl = "http://localhost:3001/bookables"
 const useBookable = (bookableId, options = {}) => {

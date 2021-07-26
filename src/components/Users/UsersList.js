@@ -7,12 +7,14 @@ import {
 import {
     Person
 } from "@material-ui/icons";
-import {useNavigate} from "react-router";
+import {
+    useNavigate
+} from "react-router-dom";
 
 const UsersList = ({users, user, getUrl}) => {
     const navigate = useNavigate();
     return (
-        <List item>
+        <List>
             {
                 users.map(u => (
                     <ListItem button

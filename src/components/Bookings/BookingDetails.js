@@ -11,7 +11,7 @@ import {
 } from "@material-ui/icons"
 
 import Booking from "./Booking";
-import {useUser} from "../Users";
+import useUser from "../Users/useUser";
 
 const BookingDetails = ({bookable, booking}) => {
     const [user] = useUser();

@@ -1,7 +1,9 @@
-import {useNavigate} from "react-router";
+import {
+    useNavigate
+} from "react-router-dom";
 
 import BookableForm from "./BookableForm";
-import {useCreateBookable} from "../../apis/Bookables";
+import useCreateBookable from "./useCreateBookable";
 
 const BookableNew = () => {
     const navigate = useNavigate();

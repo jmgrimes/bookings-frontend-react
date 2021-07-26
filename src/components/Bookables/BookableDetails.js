@@ -17,13 +17,19 @@ import {
     Visibility,
     VisibilityOff
 } from "@material-ui/icons";
-import React from "react";
-import {Link} from "react-router-dom";
-
-import {days, sessions} from "../../static.json";
+import {
+    useState
+} from "react";
+import {
+    Link
+} from "react-router-dom";
+import {
+    dayNames, 
+    sessionNames
+} from "../../static.json";
 
 const BookableDetails = ({bookable}) => {
-    const [showDetails, setShowDetails] = React.useState(true);
+    const [showDetails, setShowDetails] = useState(true);
     const toggleDetails = () => setShowDetails(showDetails => !showDetails);
 
     return (
@@ -62,7 +68,7 @@ const BookableDetails = ({bookable}) => {
                                             <ListItemIcon>
                                                 <CalendarToday/>
                                             </ListItemIcon>
-                                            <ListItemText primary={days[day]}/>
+                                            <ListItemText primary={dayNames[day]}/>
                                         </ListItem>
                                     )
                                 }
@@ -76,7 +82,7 @@ const BookableDetails = ({bookable}) => {
                                             <ListItemIcon>
                                                 <Event/>
                                             </ListItemIcon>
-                                            <ListItemText primary={sessions[session]}/>
+                                            <ListItemText primary={sessionNames[session]}/>
                                         </ListItem>
                                     )
                                 }

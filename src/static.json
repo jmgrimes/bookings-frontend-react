@@ -1,12 +1,12 @@
 {
-  "sessions": [
+  "sessionNames": [
     "Breakfast",
     "Morning",
     "Lunch",
     "Afternoon",
     "Evening"
   ],
-  "days": [
+  "dayNames": [
     "Sunday",
     "Monday",
     "Tuesday",

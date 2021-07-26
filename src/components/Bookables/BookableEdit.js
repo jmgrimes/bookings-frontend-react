@@ -1,10 +1,17 @@
-import {useNavigate, useParams} from "react-router";
+import {
+    useNavigate, 
+    useParams
+} from "react-router-dom";
 
 import BookableForm from "./BookableForm";
-import {Error, Loading} from "../Commons";
-import {useBookable, useDeleteBookable, useUpdateBookable} from "../../apis/Bookables";
+import Error from "../Commons/Error";
+import Loading from "../Commons/Loading";
+import useBookable from "./useBookable";
+import useDeleteBookable from "./useDeleteBookable";
+import useUpdateBookable from "./useUpdateBookable";
 
 const BookableEdit = () => {
+    console.log("BookableEdit");
     const navigate = useNavigate();
 
     const {id} = useParams();

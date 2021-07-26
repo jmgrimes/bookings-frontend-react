@@ -13,7 +13,9 @@ import {
     ArrowRight,
     DevicesOther
 } from "@material-ui/icons";
-import {useNavigate} from "react-router";
+import {
+    useNavigate
+} from "react-router-dom";
 
 const BookablesList = ({bookable, bookables, getUrl}) => {
     const navigate = useNavigate();

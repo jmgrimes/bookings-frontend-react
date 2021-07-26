@@ -1,12 +1,7 @@
-import UserPicker from "./UserPicker";
-import UsersList from "./UsersList";
 import UsersPage from "./UsersPage";
-import UserProvider, { useUser } from "./UserProvider";
+import UserProvider from "./UserProvider";
 
 export {
-    UserPicker,
     UserProvider,
-    UsersList,
-    UsersPage,
-    useUser
+    UsersPage
 };

@@ -2,7 +2,9 @@ import {
     Typography,
     makeStyles
 } from "@material-ui/core";
-import {DateTime} from "luxon";
+import {
+    DateTime
+} from "luxon";
 
 const useStyles = makeStyles(() => ({
     field: {

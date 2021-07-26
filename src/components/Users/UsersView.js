@@ -1,12 +1,14 @@
 import {
     Grid
 } from "@material-ui/core";
-import {useParams} from "react-router";
+import {
+    useParams
+} from "react-router-dom";
 
 import UserDetails from "./UserDetails";
 import UsersList from "./UsersList";
-import {useUser} from "./UserProvider";
-import {useUsers} from "../../apis/Users";
+import useUser from "./useUser";
+import useUsers from "./useUsers";
 
 const getUrl = id => `/users/${id}`;
 

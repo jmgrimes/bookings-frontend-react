@@ -1,5 +1,9 @@
-import {DateTime} from "luxon";
-import {useSearchParams} from "react-router-dom";
+import {
+    DateTime
+} from "luxon";
+import {
+    useSearchParams
+} from "react-router-dom";
 
 const useBookingsParams = () => {
     const [searchParams, setSearchParams] = useSearchParams();

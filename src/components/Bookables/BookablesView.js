@@ -7,12 +7,14 @@ import {
 import {
     Add
 } from "@material-ui/icons";
-import {useParams} from "react-router";
-import {Link} from "react-router-dom";
+import {
+    Link, 
+    useParams
+} from "react-router-dom";
 
 import BookableDetails from "./BookableDetails";
 import BookablesList from "./BookablesList";
-import {useBookables} from "../../apis/Bookables";
+import useBookables from "./useBookables";
 
 const useStyles = makeStyles(() => ({
     spacer: {

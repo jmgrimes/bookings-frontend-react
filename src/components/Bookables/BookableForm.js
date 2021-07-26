@@ -18,10 +18,18 @@ import {
     Delete,
     Save
 } from "@material-ui/icons";
-import React from "react";
-import {useController, useForm} from "react-hook-form"
-
-import {days as daysArray, sessions as sessionsArray} from "../../static.json";
+import {
+    useEffect,
+    useMemo
+} from "react";
+import {
+    useController, 
+    useForm
+} from "react-hook-form"
+import {
+    dayNames, 
+    sessionNames
+} from "../../static.json";
 
 const toBookable = (values) => {
     const bookable = {
@@ -40,11 +48,11 @@ const fromBookable = (bookable) => {
         title: bookable.title || "",
         group: bookable.group || "",
         notes: bookable.notes || "",
-        days: daysArray.map((_, id) => ({
+        days: dayNames.map((_, id) => ({
             id,
             active: days.indexOf(id) !== -1
         })),
-        sessions: sessionsArray.map((_, id) => ({
+        sessions: sessionNames.map((_, id) => ({
             id,
             active: sessions.indexOf(id) !== -1
         }))
@@ -86,7 +94,7 @@ const CollectionCheckbox = ({register, control, id, name, label}) => {
 
 const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
     const classes = useStyles();
-    const defaultValues = React.useMemo(
+    const defaultValues = useMemo(
         () => fromBookable(bookable), 
         [bookable]
     );
@@ -110,7 +118,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
         onSave(bookable);
     });
 
-    React.useEffect(
+    useEffect(
         () => reset(fromBookable(bookable)),
         [bookable, reset]
     );
@@ -132,7 +140,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                             <FormLabel component="legend" className={classes.sectionLabel}>Days</FormLabel>
                             <FormGroup>
                                 { 
-                                    daysArray.map((day, id) =>
+                                    dayNames.map((day, id) =>
                                         <CollectionCheckbox register={register}
                                                             control={control}
                                                             label={day}
@@ -149,7 +157,7 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                             <FormLabel component="legend" className={classes.sectionLabel}>Sessions</FormLabel>
                             <FormGroup>
                                 { 
-                                    sessionsArray.map((session, id) =>
+                                    sessionNames.map((session, id) =>
                                         <CollectionCheckbox register={register}
                                                             control={control}
                                                             label={session}

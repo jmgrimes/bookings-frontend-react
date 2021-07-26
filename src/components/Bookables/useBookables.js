@@ -1,4 +1,6 @@
-import {useQuery} from "react-query";
+import {
+    useQuery
+} from "react-query";
 
 const url = "http://localhost:3001/bookables";
 const useBookables = (options = {}) => {

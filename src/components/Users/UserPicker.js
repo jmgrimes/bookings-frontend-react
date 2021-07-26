@@ -3,10 +3,12 @@ import {
     MenuItem,
     Select
 } from "@material-ui/core";
-import React from "react";
+import {
+    useEffect
+} from "react";
 
-import {useUser} from "./UserProvider";
-import {useUsers} from "../../apis/Users";
+import useUser from "./useUser";
+import useUsers from "./useUsers";
 
 const UserPicker = () => {
     const [user, setUser] = useUser();
@@ -18,7 +20,7 @@ const UserPicker = () => {
         setUser(selectedUser);
     };
 
-    React.useEffect(
+    useEffect(
         () => {
             setUser(users[0]);
         },

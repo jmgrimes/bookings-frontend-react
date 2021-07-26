@@ -1,4 +1,6 @@
-import {useQuery} from "react-query";
+import {
+    useQuery
+} from "react-query";
 
 const baseUrl = "http://localhost:3001/bookings";
 const useBookings = (bookableId, startDate, endDate, options = {}) => {

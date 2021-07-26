@@ -1,21 +1,22 @@
 import {
     Container
 } from "@material-ui/core";
-import React from "react";
-import {Route, Routes} from "react-router";
+import {
+    lazy
+} from "react";
+import {
+    Route, 
+    Routes
+} from "react-router-dom";
 
-const UsersView = React.lazy(() => import("./UsersView").then(module => ({default: module.default})));
+const UsersView = lazy(() => import("./UsersView").then(module => ({default: module.default})));
 
 const UsersPage = () => {
     return (
         <Container className="users-page" component="main" maxWidth="lg">
             <Routes>
-                <Route path="/">
-                    <UsersView/>
-                </Route>
-                <Route path="/:id">
-                    <UsersView/>
-                </Route>
+                <Route path="/" element={<UsersView/>}/>
+                <Route path="/:id" element={<UsersView/>}/>
             </Routes>
         </Container>
     );

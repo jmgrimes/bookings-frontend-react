@@ -1,7 +1,10 @@
-import {useMutation, useQueryClient} from "react-query";
+import {
+    useMutation, 
+    useQueryClient
+} from "react-query";
 
 const baseUrl = "http://localhost:3001/bookables";
-const useUpdateBookable = (onSuccess = () => {}) => {
+const useDeleteBookable = (onSuccess = () => {}) => {
     const queryClient = useQueryClient();
     const mutation = useMutation(
         data => {
@@ -32,4 +35,4 @@ const useUpdateBookable = (onSuccess = () => {}) => {
     };
 };
 
-export default useUpdateBookable;
+export default useDeleteBookable;
