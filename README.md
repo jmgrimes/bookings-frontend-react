@@ -4,6 +4,19 @@ This project is my journey through the sample application of React Hooks in Acti
 
 Both of these choices serve to deviate the application from its origins, and force me to go "off script" a bit as I work.  They also more accurately represent the choices I would be likely to make in developing my own applications, helping me understand the effects of those choices more fully.
 
+To that end, this project is an example of using the following libraries in a single React application:
+
+* **@material-ui/core** - Main UI components.
+* **@material-ui/icons** - Main UI icons library.
+* **@material-ui/lab** - Skeleton UI components used during second tier loading.
+* **react-error-boundary** - Common error boundary library for defining generic fallbacks quickly.
+* **react-hook-form** - Full featured form and form controller library with validation support.
+* **react-query** - Dedicated library for data fetching, caching, and mutations.
+* **react-router** - Path based routing solution.
+* **react-router-dom** - Path based routing solution.
+
+This product also uses **luxon** for date and time handling.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
