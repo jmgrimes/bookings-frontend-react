@@ -1,6 +1,7 @@
 {
   "name": "booking-app",
   "version": "2021.28.0",
+  "license": "CC0-1.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.4",
