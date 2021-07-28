@@ -12,7 +12,7 @@ import {
     useParams
 } from "react-router-dom";
 
-import BookableDetails from "./BookableDetails";
+import BookableView from "./BookableView";
 import BookablesList from "./BookablesList";
 import useBookables from "./useBookables";
 
@@ -45,7 +45,7 @@ const BookablesView = () => {
                 </Button>
             </Grid>
             <Grid item xs={9}>
-                <BookableDetails bookable={bookable}/>
+                <BookableView bookable={bookable}/>
             </Grid>
         </Grid>
     );

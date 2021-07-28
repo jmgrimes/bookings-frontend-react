@@ -35,38 +35,38 @@ const useStyles = makeStyles(() => ({
 }));
 
 const NavigationPage = () => {
-  const classes = useStyles();
-  const location = useLocation();
-  const selectedTab = location.pathname.split("/").filter(path => path)?.[0]
+    const classes = useStyles();
+    const location = useLocation();
+    const selectedTab = location.pathname.split("/").filter(path => path)?.[0]
 
-  return (
-      <AppBar position="static" color="transparent" className={classes.appbar}>
-          <Toolbar>
-              <ErrorBoundary FallbackComponent={Error}>
-                  <Suspense fallback={<Loading message="Loading application navigation..."/>}>
-                      <Tabs value={selectedTab} className={classes.menuTabs}>
-                          <Tab icon={<Event/>}
-                               component={Link}
-                               label="Bookings"
-                               value="bookings"
-                               to="/bookings"/>
-                          <Tab icon={<DevicesOther/>}
-                               component={Link}
-                               label="Bookables"
-                               value="bookables"
-                               to="/bookables"/>
-                          <Tab icon={<People/>}
-                               component={Link}
-                               label="Users"
-                               value="users"
-                               to="/users"/>
-                      </Tabs>
-                      <UserPicker/>
-                  </Suspense>
-              </ErrorBoundary>
-          </Toolbar>
-      </AppBar>
-  );
+    return (
+        <AppBar position="static" color="transparent" className={classes.appbar}>
+            <Toolbar>
+                <ErrorBoundary FallbackComponent={Error}>
+                    <Suspense fallback={<Loading message="Loading..."/>}>
+                        <Tabs value={selectedTab} className={classes.menuTabs}>
+                            <Tab icon={<Event/>}
+                                component={Link}
+                                label="Bookings"
+                                value="bookings"
+                                to="/bookings"/>
+                            <Tab icon={<DevicesOther/>}
+                                component={Link}
+                                label="Bookables"
+                                value="bookables"
+                                to="/bookables"/>
+                            <Tab icon={<People/>}
+                                component={Link}
+                                label="Users"
+                                value="users"
+                                to="/users"/>
+                        </Tabs>
+                        <UserPicker/>
+                    </Suspense>
+                </ErrorBoundary>
+            </Toolbar>
+        </AppBar>
+    );
 };
 
 export default NavigationPage;

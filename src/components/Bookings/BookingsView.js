@@ -7,7 +7,7 @@ import {
 } from "react";
 
 import BookablesList from "../Bookables/BookablesList";
-import BookingDetails from "./BookingDetails";
+import BookingController from "./BookingController";
 import BookingsGrid from "./BookingsGrid";
 import Loading from "../Commons/Loading";
 import WeekPicker from "./WeekPicker";
@@ -16,6 +16,7 @@ import useBookingsParams from "./useBookingsParams";
 
 const BookingsView = () => {
     const [booking, setBooking] = useState();
+    const [isEditing, setIsEditing] = useState(false);
     const {date, bookableId} = useBookingsParams();
     const {bookables} = useBookables({suspense: true});
     const bookable = bookables.find(b => b.id === bookableId) || bookables[0];
@@ -37,7 +38,11 @@ const BookingsView = () => {
                 </Suspense>
             </Grid>
             <Grid item xs={3}>
-                <BookingDetails bookable={bookable} booking={booking}/>
+                <BookingController bookable={bookable} 
+                                   booking={booking} 
+                                   isEditing={isEditing} 
+                                   setBooking={setBooking}
+                                   setIsEditing={setIsEditing}/>
             </Grid>
         </Grid>
     );

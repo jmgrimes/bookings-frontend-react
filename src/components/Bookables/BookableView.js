@@ -28,10 +28,9 @@ import {
     sessionNames
 } from "../../static.json";
 
-const BookableDetails = ({bookable}) => {
+const BookableView = ({bookable}) => {
     const [showDetails, setShowDetails] = useState(true);
     const toggleDetails = () => setShowDetails(showDetails => !showDetails);
-
     return (
         bookable ?
         <Card>
@@ -96,4 +95,4 @@ const BookableDetails = ({bookable}) => {
     );
 };
 
-export default BookableDetails;
+export default BookableView;

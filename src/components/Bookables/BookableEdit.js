@@ -20,19 +20,19 @@ const BookableEdit = () => {
         updateBookable,
         error: updateError,
         isError: isUpdateError,
-        isLoading: isUpdateLoading
+        isLoading: isUpdating
     } = useUpdateBookable(bookable => navigate(`/bookables/${bookable.id}`));
     const {
         deleteBookable,
         error: deleteError,
         isError: isDeleteError,
-        isLoading: isDeleteLoading
+        isLoading: isDeleting
     } = useDeleteBookable(() => navigate("/bookables"));
 
-    if (isUpdateLoading) return <Loading message="Updating bookable..."/>;
+    if (isUpdating) return <Loading message="Updating bookable..."/>;
     if (isUpdateError) return <Error error={updateError}/>;
 
-    if (isDeleteLoading) return <Loading message="Deleting bookable..."/>;
+    if (isDeleting) return <Loading message="Deleting bookable..."/>;
     if (isDeleteError) return <Error error={deleteError}/>;
 
     return (
