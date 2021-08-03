@@ -94,16 +94,38 @@ const CollectionCheckbox = ({register, control, id, name, label}) => {
 
 const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
     const classes = useStyles();
+
     const defaultValues = useMemo(
         () => fromBookable(bookable), 
         [bookable]
     );
+    
     const {control, handleSubmit, register, reset} = useForm({defaultValues});
-
     const idField = register("id", {valueAsNumber: true});
-    const {field: titleField} = useController({control, name: "title", rules: {required: true}});
-    const {field: groupField} = useController({control, name: "group", rules: {required: true}});
-    const {field: notesField} = useController({control, name: "notes", rules: {required: true}});
+    const {field: titleField, fieldState: titleFieldState } = useController({
+        control, 
+        name: "title", 
+        rules: {
+            required: true
+        }
+    });
+    const {field: groupField, fieldState: groupFieldState } = useController({
+        control, 
+        name: "group", 
+        rules: {
+            required: true
+        }
+    });
+    const {field: notesField, fieldState: notesFieldState } = useController({
+        control, 
+        name: "notes", 
+        rules: {
+            required: true
+        }
+    });
+    const titleError = titleFieldState.error?.type === "required" ? "Title is required." : null;
+    const groupError = groupFieldState.error?.type === "required" ? "Group is required." : null;
+    const notesError = notesFieldState.error?.type === "required" ? "Notes is required" : null;
 
     const _cancel = () => {
         onCancel(bookable);
@@ -131,9 +153,25 @@ const BookableForm = ({bookable, onCancel, onDelete, onSave}) => {
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <FormLabel component="legend" className={classes.sectionLabel}>Details</FormLabel>
-                        <TextField fullWidth label="Title" className={classes.textField} {...titleField}/>
-                        <TextField fullWidth label="Group" className={classes.textField} {...groupField}/>
-                        <TextField fullWidth multiline label="Notes" className={classes.textField} {...notesField}/>
+                        <TextField fullWidth 
+                                   label="Title" 
+                                   className={classes.textField} 
+                                   error={titleFieldState.invalid}
+                                   helperText={titleError}
+                                   {...titleField}/>
+                        <TextField fullWidth 
+                                   label="Group" 
+                                   className={classes.textField} 
+                                   error={groupFieldState.invalid}
+                                   helperText={groupError}
+                                   {...groupField}/>
+                        <TextField fullWidth 
+                                   multiline 
+                                   label="Notes" 
+                                   className={classes.textField} 
+                                   error={notesFieldState.invalid}
+                                   helperText={notesError}
+                                   {...notesField}/>
                     </Grid>
                     <Grid item xs={3}>
                         <FormControl component="fieldset">

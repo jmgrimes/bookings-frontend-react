@@ -62,18 +62,34 @@ const fromBooking = (booking, bookable, user) => {
 const BookingForm = ({bookable, booking, onCancel, onDelete, onSave}) => {
     const classes = useStyles();
     const [user] = useUser();
+
     const defaultValues = useMemo(
         () => fromBooking(booking, bookable, user), 
         [booking, bookable, user]
     );
+
     const {control, formState, handleSubmit, register, reset} = useForm({defaultValues});
     const idField = register("id", {valueAsNumber: true});
     const bookerIdField = register("bookerId", {valueAsNumber: true})
     const bookableIdField = register("bookableId", {valueAsNumber: true});
     const dateField = register("date");
     const sessionField = register("session");
-    const {field: titleField} = useController({control, name: "title", rules: {required: true}});
-    const {field: notesField} = useController({control, name: "notes", rules: {required: false}});
+    const {field: titleField, fieldState: titleFieldState} = useController({
+        control, 
+        name: "title", 
+        rules: {
+            required: true
+        }
+    });
+    const {field: notesField, fieldState: notesFieldState} = useController({
+        control, 
+        name: "notes", 
+        rules: {
+            required: false
+        }
+    });
+    const titleError = titleFieldState.error?.type === "required" ? "Title is required." : null;
+    const notesError = notesFieldState.invalid ? "Notes is invalid." : null;
     
     const _cancel = () => {
         onCancel(booking);
@@ -121,11 +137,15 @@ const BookingForm = ({bookable, booking, onCancel, onDelete, onSave}) => {
                 <TextField fullWidth 
                         label="Title" 
                         className={classes.textField} 
+                        error={titleFieldState.invalid}
+                        helperText={titleError}
                         {...titleField}/>
                 <TextField fullWidth 
                         multiline 
                         label="Notes" 
                         className={classes.textField} 
+                        error={notesFieldState.invalid}
+                        helperText={notesError}
                         {...notesField}/>
             </CardContent>
             <CardActions>
