@@ -1,4 +1,4 @@
-# Getting Started
+# React Bookings Application
 
 This project is my journey through the sample application of React Hooks in Action by Manning Publications, and demonstrates several facets of using the various built in React Hooks instead of using class based components.  Along the way, my project will definitely be deviating from the React Hooks in Action sample, in order to make it my own, as I experiment with different ways to structure and encapsulate logic in the application better, and work with an existing UI library like Material UI to provide the user interface components.
 
@@ -6,20 +6,34 @@ Both of these choices serve to deviate the application from its origins, and for
 
 To that end, this project is an example of using the following libraries in a single React application:
 
-* **@material-ui/core** - Main UI components.
-* **@material-ui/icons** - Main UI icons library.
-* **@material-ui/lab** - Skeleton UI components used during second tier loading.
-* **react-error-boundary** - Common error boundary library for defining generic fallbacks quickly.
-* **react-hook-form** - Full featured form and form controller library with validation support.
-* **react-query** - Dedicated library for data fetching, caching, and mutations.
-* **react-router** - Path based routing solution.
-* **react-router-dom** - Path based routing solution.
+* [**material-ui**](https://material-ui.com) - Main UI components and icons.  This project uses the core library, the icons library, and the labs library (for skeleton wave loading displays on the booking grid).
+* [**react-error-boundary**](https://github.com/bvaughn/react-error-boundary) - Common error boundary library for defining generic fallbacks quickly.
+* [**react-hook-form**](https://react-hook-form.com) - Full featured form and form controller library with validation support.
+* [**react-query**](https://react-query.tanstack.com) - Dedicated library for data fetching, caching, and mutations.
+* [**react-router**](https://reactrouter.com) - Path based routing solution.  This project uses the version 6 beta release.
 
-This product also uses **luxon** for date and time handling.
+This project also uses **luxon** for date and time handling.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Project Structure
+
+The core of the application is contained in the src and public folders.  The public folder contains all of the skeleton HTML pages that load the react application when it is requested by the brower at runtime.
+
+The src folder contains the corresponding index.js script that will be loaded by the HTML page, rendering the main application component to the DOM, as well as some static data, and the components folder.  Components are divided by feature, and generally follow the following naming convention:
+
+* Components are contained in files using the convention MyComponentName.js.
+* Components are default exported from their corresponding file.
+* Hooks are contained in files using the convention useMyHookName.js.
+* Hooks are default exported from their corresponding file.
+* Components that end with the word "Page" are exported via the index.js file in each subfolder, with very few exceptions (UserProvider component is exported from Users/index.js).
+* Exports from non index.js files are typically "default" only, with very few exceptions (contexts are exported non-default from Users/useUser).
+* Dependencies between components always reference the default export from the file where the component is defined for internal components.
+* The App component always uses the index to get the top level exports for the feature.
+
 ## Available Scripts
+
+This project uses Yarn for its build process and scripts.  It may work with npm, but this is not tested.
 
 In the project directory, you can run:
 
@@ -64,33 +78,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
