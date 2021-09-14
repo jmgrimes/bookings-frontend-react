@@ -26,7 +26,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: jmgrimes/react-bookings-app/react-bookings-app
+          repository: jmgrimes/bookings-react-app/bookings-react-app
           add_git_labels: true
           tag_with_ref: true
           push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
