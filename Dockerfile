@@ -3,7 +3,7 @@ FROM node:lts-alpine AS build
 
 WORKDIR /app
 ADD . /app/
-RUN corepack pnpm install --production
+RUN corepack pnpm install
 RUN corepack pnpm run build
 
 # Distribution stage to assemble production bundle on NGINX with required API endpoint proxying and other runtime features.
