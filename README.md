@@ -37,7 +37,7 @@ This project uses Yarn for its build process and scripts.  It may work with npm,
 
 In the project directory, you can run:
 
-### `yarn start`
+### `pnpm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -45,7 +45,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn start-backend`
+### `pnpm start-backend`
 
 Runs the sample backend for the database.\
 Open [http://localhost:3001](http://localhost:3001) to view it in the browser or otherwise make API requests to it.
@@ -54,12 +54,12 @@ This will read from and modify the db.json file in the root of this project as a
 
 To better experience the "loading" behaviors of this app, you can append --delay <ms> to introduce a fixed time delay for the backend.
 
-### `yarn test`
+### `pnpm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+### `pnpm build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -69,7 +69,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+### `pnpm eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 

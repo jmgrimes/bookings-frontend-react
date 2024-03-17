@@ -3,8 +3,8 @@ FROM node:lts-alpine AS build
 
 WORKDIR /app
 ADD . /app/
-RUN yarn install
-RUN CI=true yarn run build
+RUN corepack pnpm install --production
+RUN corepack pnpm run build
 
 # Distribution stage to assemble production bundle on NGINX with required API endpoint proxying and other runtime features.
 FROM nginx:stable-alpine

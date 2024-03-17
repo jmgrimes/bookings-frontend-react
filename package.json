@@ -1,6 +1,6 @@
 {
   "name": "booking-app",
-  "version": "2021.28.0",
+  "version": "2024.11.0",
   "license": "CC0-1.0",
   "private": true,
   "dependencies": {
@@ -26,11 +26,11 @@
     "react-scripts": "4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "start-backend": "json-server --watch db.json --port 3001",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-scripts --openssl-legacy-provider build",
+    "test": "react-scripts --openssl-legacy-provider test",
+    "eject": "react-scripts --openssl-legacy-provider eject"
   },
   "eslintConfig": {
     "extends": [

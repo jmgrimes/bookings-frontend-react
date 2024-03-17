@@ -1,15 +1,7 @@
 name: Build Workflow
 on:
   pull_request:
-    pathsignore:
-      - 'catalog-info.yaml'
-      - 'mkdocs.yml'
-      - 'docs/**'
   push:
-    pathsignore:
-      - 'catalog-info.yaml'
-      - 'mkdocs.yml'
-      - 'docs/**'
     branches:
       - main
       - develop
